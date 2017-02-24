@@ -1,0 +1,12 @@
+{
+	"name": "sudoku",
+	"authors": [
+		"te-sh"
+	],
+	"dependencies": {
+		"vibe-d": "~>0.7.30"
+	},
+	"description": "Sudoku solver",
+	"copyright": "Copyright 2017, te-sh",
+	"license": "MIT Lisence"
+}
