@@ -1,17 +1,22 @@
 import vibe.vibe;
 
-void main()
-{
-	auto settings = new HTTPServerSettings;
-	settings.port = 8080;
-	settings.bindAddresses = ["::1", "127.0.0.1"];
-	listenHTTP(settings, &hello);
+import board;
 
-	logInfo("Please open http://127.0.0.1:8080/ in your browser.");
-	runApplication();
+void getBoard(HTTPServerRequest req, HTTPServerResponse res)
+{
+  res.writeJsonBody(simpleBoard);
 }
 
-void hello(HTTPServerRequest req, HTTPServerResponse res)
+void main()
 {
-	res.writeBody("Hello, World!");
+  auto router = new URLRouter;
+  router.get("/board", &getBoard);
+
+  auto settings = new HTTPServerSettings;
+  settings.port = 8080;
+  settings.bindAddresses = ["::1", "127.0.0.1"];
+  listenHTTP(settings, router);
+
+  logInfo("Please open http://127.0.0.1:8080/ in your browser.");
+  runApplication();
 }
