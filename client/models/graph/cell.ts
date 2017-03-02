@@ -34,7 +34,10 @@ export class GraphCell {
   }
 
   private setFrame() {
-    this.frame = Utils.buildFrame(this.config.cell.frame, this.size.cell);
+    let config = this.config.cell.frame;
+    let color = this.config.cell.frame.color!;
+    let size = this.size.cell;
+    this.frame = Utils.buildRect(config, color, size);
     this.container.addChild(this.frame);
   }
 

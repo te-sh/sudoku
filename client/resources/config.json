@@ -3,7 +3,7 @@
     "padding": 2,
     "text": {
       "size": 36,
-      "font": "48px Tinos",
+      "font": "Tinos",
       "colors": ["000000", "0000ff"]
     },
     "frame": {
@@ -29,7 +29,7 @@
     "padding": 2,
     "text": {
       "size": 13,
-      "font": "13px Play",
+      "font": "Play",
       "color": "404040"
     },
     "frame": {

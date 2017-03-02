@@ -8,6 +8,7 @@ import { Utils } from "models/graph/utils";
 export class GraphCand {
   container: PIXI.Container;
   frame: PIXI.Graphics;
+  text: PIXI.Text;
 
   constructor(
     private board: Board,
@@ -17,6 +18,7 @@ export class GraphCand {
   ) {
     this.setContainer();
     this.setFrame();
+    this.setText();
   }
 
   private setContainer() {
@@ -30,7 +32,19 @@ export class GraphCand {
   }
 
   private setFrame() {
-    this.frame = Utils.buildFrame(this.config.cand.frame, this.size.cand);
+    let config = this.config.cand.frame;
+    let color = this.config.cand.frame.color!;
+    let size = this.size.cand;
+    this.frame = Utils.buildRect(config, color, size);
     this.container.addChild(this.frame);
+  }
+
+  private setText() {
+    let cand = (this.cand + 1).toString()
+    let config = this.config.cand.text;
+    let color = this.config.cand.text.color!;
+    let size = this.size.cand + this.config.cand.frame.width;
+    this.text = Utils.buildText(cand, config, color, size);
+    this.container.addChild(this.text);
   }
 }
