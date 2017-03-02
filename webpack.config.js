@@ -10,6 +10,7 @@ let isWatch = ENV === 'watch';
 let config = {
   entry: {
     'main': './client/entry/main.ts',
+    'styles': './client/entry/styles.ts',
     'vendor-ng': './client/entry/vendor-ng.ts',
     'vendor': './client/entry/vendor.ts',
     'polyfills': './client/entry/polyfills.ts'
@@ -22,7 +23,7 @@ let config = {
     library: 'Startup'
   },
   resolve: {
-    extensions: ['.ts', '.js', '.html', '.css', '.xlf', 'json'],
+    extensions: ['.ts', '.js', '.html', '.css', '.scss', '.xlf', 'json'],
     plugins: [
       new TsConfigPathsPlugin()
     ]
@@ -36,6 +37,10 @@ let config = {
       {
         test: /\.css/,
         loader: 'style-loader!css-loader'
+      },
+      {
+        test: /\.scss$/,
+        loader: 'style-loader!css-loader!sass-loader'
       },
       {
         test: /\.svg$/,
