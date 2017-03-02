@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as PIXI from "pixi.js";
+import * as _ from "lodash";
 
 import { Board } from "models/board";
 import { Config } from "models/graph/config";
@@ -13,6 +14,7 @@ export class GraphService {
 
   private renderer: PIXI.WebGLRenderer | PIXI.CanvasRenderer;
   private stage: PIXI.Container;
+  private cells: GraphCell[];
 
   constructor() {
     this.config = new Config();
@@ -32,8 +34,10 @@ export class GraphService {
     let size = new Size(this.board, this.config);
     this.renderer.resize(size.board.width, size.board.height);
 
-    let cells = this.board.cells.map(cell => new GraphCell(this.board, cell, this.config, size));
-    cells.forEach(cell => this.stage.addChild(cell.container));
+    this.cells = _.map(this.board.cells, cell => {
+      return new GraphCell(this.board, cell, this.config, size);
+    });
+    this.cells.forEach(cell => this.stage.addChild(cell.container));
 
     this.renderer.render(this.stage);
   }

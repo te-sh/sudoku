@@ -21,8 +21,8 @@ export class Size {
     this.cand = config.cand.text.size + padding.cand * 2 + border.cand;
 
     this.cands = {
-      width: Math.ceil(Math.sqrt(board.nc)) * this.cand + border.cand,
-      height: Math.floor(Math.sqrt(board.nc)) * this.cand + border.cand
+      width: board.candCols * this.cand + border.cand,
+      height: board.candRows * this.cand + border.cand
     };
 
     this.cell = this.cands.width + padding.cell * 2 + border.cell;
