@@ -1,4 +1,4 @@
 <sudoku-toolbar>
 </sudoku-toolbar>
-<sudoku-board>
+<sudoku-board [board]="boardService.board$ | async">
 </sudoku-board>
