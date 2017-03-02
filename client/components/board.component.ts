@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, Input, OnInit, AfterViewInit, ViewChild, ElementRef } from "@angular/core";
 import * as PIXI from "pixi.js";
 
 import { Board } from "models/board";
@@ -7,14 +7,19 @@ import { Board } from "models/board";
   selector: "sudoku-board",
   templateUrl: "board.component.html"
 })
-export class BoardComponent implements AfterViewInit {
+export class BoardComponent implements OnInit, AfterViewInit {
   @Input() board: Board;
   @ViewChild("container") container: ElementRef;
 
+  private renderer: PIXI.WebGLRenderer | PIXI.CanvasRenderer;
+
+  ngOnInit() {
+    this.renderer = PIXI.autoDetectRenderer(100, 100);
+  }
+
   ngAfterViewInit() {
-    let renderer = PIXI.autoDetectRenderer(100, 100);
-    this.container.nativeElement.appendChild(renderer.view);
+    this.container.nativeElement.appendChild(this.renderer.view);
     let stage = new PIXI.Container();
-    renderer.render(stage);
+    this.renderer.render(stage);
   }
 }

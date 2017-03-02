@@ -1,0 +1,66 @@
+{
+  "cell": {
+    "padding": 2,
+    "text": {
+      "size": 36,
+      "font": "48px Tinos",
+      "colors": ["000000", "0000ff"]
+    },
+    "frame": {
+      "offset": 0,
+      "width": 1,
+      "color": "b0b0b0",
+      "alpha": 1
+    },
+    "markRect": {
+      "offset": 1,
+      "width": 2,
+      "colors": ["ff80b0", "b080ff"],
+      "alpha": 0.6
+    },
+    "cursor": {
+      "offset": 1,
+      "width": 1,
+      "color": "ff0000",
+      "alpha": 1
+    }
+  },
+  "cand": {
+    "padding": 2,
+    "text": {
+      "size": 13,
+      "font": "13px Play",
+      "color": "404040"
+    },
+    "frame": {
+      "offset": 0,
+      "width": 1,
+      "color": "e0e0e0",
+      "alpha": 1
+    },
+    "markRect": {
+      "offset": 1,
+      "width": 2,
+      "colors": ["ff4040", "4040ff"],
+      "alpha": 0.6
+    },
+    "markCirc": {
+      "size": 6,
+      "colors": ["c0ff80", "ffc080"]
+    }
+  },
+  "house": {
+    "frame": {
+      "offset": 0,
+      "width": 1,
+      "color": "000000",
+      "alpha": 1
+    },
+    "markPoly": {
+      "offset": 1,
+      "width": 2,
+      "colors": ["ff80b0", "b080ff"],
+      "alpha": 0.6
+    }
+  }
+}
