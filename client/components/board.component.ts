@@ -1,25 +1,26 @@
-import { Component, Input, OnInit, AfterViewInit, ViewChild, ElementRef } from "@angular/core";
-import * as PIXI from "pixi.js";
+import { Component, Input, AfterViewInit, ViewChild, ElementRef, OnChanges, SimpleChanges } from "@angular/core";
 
 import { Board } from "models/board";
+import { GraphService } from "services/graph.service";
 
 @Component({
   selector: "sudoku-board",
   templateUrl: "board.component.html"
 })
-export class BoardComponent implements OnInit, AfterViewInit {
+export class BoardComponent implements AfterViewInit, OnChanges {
   @Input() board: Board;
   @ViewChild("container") container: ElementRef;
 
-  private renderer: PIXI.WebGLRenderer | PIXI.CanvasRenderer;
-
-  ngOnInit() {
-    this.renderer = PIXI.autoDetectRenderer(100, 100);
+  constructor(private graph: GraphService) {
   }
 
   ngAfterViewInit() {
-    this.container.nativeElement.appendChild(this.renderer.view);
-    let stage = new PIXI.Container();
-    this.renderer.render(stage);
+    this.graph.init(this.container.nativeElement);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes["board"]) {
+      this.graph.initBoard(this.board);
+    }
   }
 }
