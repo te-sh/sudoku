@@ -7,8 +7,12 @@ export class Board {
   constructor(json: any) {
     this.rows = json.rows;
     this.cols = json.cols;
-    this.nc = json.n;
+    this.nc = json.nc;
     this.cells = json.cells.map((c: number) => new Cell(this.nc, c));
+  }
+
+  indexToPos(index: number) {
+    return { col: index % this.cols, row: Math.floor(index / this.rows) };
   }
 }
 

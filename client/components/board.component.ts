@@ -20,7 +20,9 @@ export class BoardComponent implements AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes["board"]) {
-      this.graph.initBoard(this.board);
+      if (this.board) {
+        this.graph.initBoard(this.board);
+      }
     }
   }
 }

@@ -5,7 +5,6 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 
 import { BoardService } from "services/board.service";
 import { GraphService } from "services/graph.service";
-import { ConfigService } from "services/config.service";
 
 import { AppComponent } from "components/app.component";
 import { ToolbarComponent } from "components/toolbar.component";
@@ -24,8 +23,7 @@ import { BoardComponent } from "components/board.component";
   ],
   providers: [
     BoardService,
-    GraphService,
-    ConfigService
+    GraphService
   ],
   bootstrap: [
     AppComponent
