@@ -12,45 +12,45 @@ export class GraphCand {
   private text: PIXI.Text;
 
   constructor(
-    private board: Board,
-    private cand: number,
     private config: Config,
-    private size: Size
+    private cand: number,
+    board: Board,
+    size: Size
   ) {
-    this.setContainer();
-    this.setFrameGraphics();
-    this.setTextGraphics();
+    this.setContainer(board, size);
+    this.setFrameGraphics(size);
+    this.setTextGraphics(size);
   }
 
   setVisible(visible: boolean) {
     this.text.visible = visible;
   }
 
-  private setContainer() {
+  private setContainer(board: Board, size: Size) {
     this.container = new PIXI.Container();
-    this.container.width = this.size.cell;
-    this.container.height = this.size.cell;
+    this.container.width = size.cell;
+    this.container.height = size.cell;
 
-    let p = this.board.candIndexToPos(this.cand);
-    this.container.x = p.col * this.size.cand;
-    this.container.y = p.row * this.size.cand;
+    let p = board.candIndexToPos(this.cand);
+    this.container.x = p.col * size.cand;
+    this.container.y = p.row * size.cand;
   }
 
-  private setFrameGraphics() {
+  private setFrameGraphics(size: Size) {
     this.frame = Utils.buildRect(
       this.config.cand.frame,
       this.config.cand.frame.color!,
-      this.size.cand
+      size.cand
     );
     this.container.addChild(this.frame);
   }
 
-  private setTextGraphics() {
+  private setTextGraphics(size: Size) {
     this.text = Utils.buildText(
       (this.cand + 1).toString(),
       this.config.cand.text,
       this.config.cand.text.color!,
-      this.size.cand + this.config.cand.frame.width
+      size.cand + this.config.cand.frame.width
     );
     this.container.addChild(this.text);
   }

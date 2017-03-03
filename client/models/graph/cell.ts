@@ -16,21 +16,21 @@ export class GraphCell {
   private cands: GraphCand[];
 
   constructor(
-    private board: Board,
-    private cell: Cell,
     private config: Config,
-    private size: Size
+    private cell: Cell,
+    board: Board,
+    size: Size
   ) {
-    this.setContainer();
-    this.setFrameGraphics();
-    this.setCursorGraphics();
-    this.setCands();
+    this.setContainer(board, size);
+    this.setFrameGraphics(size);
+    this.setCursorGraphics(size);
+    this.setCands(board, size);
   }
 
   update() {
     if (this.cell.cands) {
-      _.forEach(new Array(this.board.nc), (_, cand) => {
-        this.cands[cand].setVisible(this.cell.has(cand));
+      this.cands.forEach((cand, index) => {
+        cand.setVisible(this.cell.has(index));
       });
     }
   }
@@ -43,46 +43,46 @@ export class GraphCell {
     this.cursor.visible = this.cell.index === cursor;
   }
 
-  private setContainer() {
+  private setContainer(board: Board, size: Size) {
     this.container = new PIXI.Container();
-    this.container.width = this.size.cell;
-    this.container.height = this.size.cell;
+    this.container.width = size.cell;
+    this.container.height = size.cell;
 
-    let p = this.board.indexToPos(this.cell.index);
-    this.container.x = p.col * this.size.cell;
-    this.container.y = p.row * this.size.cell;
+    let p = board.indexToPos(this.cell.index);
+    this.container.x = p.col * size.cell;
+    this.container.y = p.row * size.cell;
   }
 
-  private setFrameGraphics() {
+  private setFrameGraphics(size: Size) {
     this.frame = Utils.buildRect(
       this.config.cell.frame,
       this.config.cell.frame.color!,
-      this.size.cell
+      size.cell
     );
     this.container.addChild(this.frame);
   }
 
-  private setCursorGraphics() {
+  private setCursorGraphics(size: Size) {
     this.cursor = Utils.buildRect(
       this.config.cell.cursor,
       this.config.cell.cursor.color!,
-      this.size.cell
+      size.cell
     );
     this.container.addChild(this.cursor);
   }
 
-  private setCands() {
+  private setCands(board: Board, size: Size) {
     this.candsContainer
 
-    this.candsContainer.width = this.size.cands.width;
-    this.candsContainer.height = this.size.cands.height;
+    this.candsContainer.width = size.cands.width;
+    this.candsContainer.height = size.cands.height;
 
-    let s = this.size.cell + this.config.cell.frame.width;
-    this.candsContainer.x = (s - this.size.cands.width) / 2;
-    this.candsContainer.y = (s - this.size.cands.height) / 2;
+    let s = size.cell + this.config.cell.frame.width;
+    this.candsContainer.x = (s - size.cands.width) / 2;
+    this.candsContainer.y = (s - size.cands.height) / 2;
 
-    this.cands = _.map(new Array(this.board.nc), (_, cand) => new GraphCand(
-      this.board, cand, this.config, this.size
+    this.cands = _.range(board.nc).map(cand => new GraphCand(
+      this.config, cand, board, size
     ));
 
     this.cands.forEach(cand => this.candsContainer.addChild(cand.container));

@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import * as turf from "@turf/turf";
 
-import { Board, House } from "models/board";
+import { House } from "models/board";
 import { Config } from "models/graph/config";
 import { LatticePoint } from "models/graph/lattice_point";
 import { Utils } from "models/graph/utils";
@@ -13,21 +13,20 @@ export class GraphHouse {
   private points: number[][];
 
   constructor(
-    _board: Board,
     private house: House,
     private config: Config,
-    private latticePoints: LatticePoint[]
+    latticePoints: LatticePoint[]
   ) {
     this.setContainer();
-    this.setPoints();
+    this.setPoints(latticePoints);
     if (house.type === "box") {
       this.setFrameGraphics();
     }
   }
 
-  private setPoints() {
+  private setPoints(latticePoints: LatticePoint[]) {
     let cellPolys = this.house.cells.map(cell => {
-      let p = this.latticePoints[cell];
+      let p = latticePoints[cell];
       return turf.polygon([[
         [p.left, p.top],
         [p.left, p.bottom],

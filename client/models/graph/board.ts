@@ -1,5 +1,4 @@
 import * as PIXI from "pixi.js";
-import * as _ from "lodash";
 
 import { Board } from "models/board";
 import { Config } from "models/graph/config";
@@ -23,17 +22,17 @@ export class GraphBoard {
 
     this.stage = new PIXI.Container();
 
-    this.cells = _.map(this.board.cells, cell => new GraphCell(
-      this.board, cell, this.config, this.size
+    this.cells = this.board.cells.map(cell => new GraphCell(
+      this.config, cell, this.board, this.size
     ));
     this.cells.forEach(cell => this.stage.addChild(cell.container));
 
-    let latticePoints = _.map(this.board.cells, cell => new LatticePoint(
+    let latticePoints = this.board.cells.map(cell => new LatticePoint(
       cell.index, this.board, this.size
     ));
 
-    this.houses = _.map(this.board.houses, house => new GraphHouse(
-      this.board, house, this.config, latticePoints
+    this.houses = this.board.houses.map(house => new GraphHouse(
+      house, this.config, latticePoints
     ));
     this.houses.forEach(house => this.stage.addChild(house.container));
   }
