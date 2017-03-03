@@ -38,6 +38,10 @@ export class GraphBoard {
     this.houses.forEach(house => this.stage.addChild(house.container));
   }
 
+  update() {
+    this.cells.forEach(cell => cell.update());
+  }
+
   setEditMode(editMode: boolean) {
     if (this.cells) {
       this.cells.forEach(cell => cell.setEditMode(editMode));

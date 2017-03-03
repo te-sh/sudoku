@@ -43,6 +43,10 @@ export class Cell {
       this.cands = json.cands;
     }
   }
+
+  has(cand: number) {
+    return !!this.cands && (this.cands & (1 << cand)) !== 0;
+  }
 }
 
 export class House {

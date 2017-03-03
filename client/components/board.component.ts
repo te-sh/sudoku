@@ -11,17 +11,19 @@ export class BoardComponent implements AfterViewInit, OnChanges {
   @Input() board: Board;
   @ViewChild("container") container: ElementRef;
 
-  constructor(private graph: GraphService) {
+  constructor(private graphService: GraphService) {
   }
 
   ngAfterViewInit() {
-    this.graph.init(this.container.nativeElement);
+    this.graphService.init(this.container.nativeElement);
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes["board"]) {
-      if (this.board) {
-        this.graph.initBoard(this.board);
+    let change = changes["board"];
+    if (change) {
+      if (this.board && change.previousValue !== change.currentValue) {
+        this.graphService.initBoard(this.board);
+      } else {
       }
     }
   }

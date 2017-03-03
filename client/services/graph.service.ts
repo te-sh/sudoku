@@ -28,6 +28,9 @@ export class GraphService {
     this.render();
   }
 
+  updateBoard() {
+  }
+
   setEditMode(editMode: boolean, render = true) {
     this.editMode = editMode;
     this.graphBoard.setEditMode(editMode);

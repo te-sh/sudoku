@@ -27,6 +27,14 @@ export class GraphCell {
     this.setCands();
   }
 
+  update() {
+    if (this.cell.cands) {
+      _.forEach(new Array(this.board.nc), (_, cand) => {
+        this.cands[cand].setVisible(this.cell.has(cand));
+      });
+    }
+  }
+
   setEditMode(editMode: boolean) {
     this.candsContainer.visible = !editMode && !!this.cell.cands;
   }

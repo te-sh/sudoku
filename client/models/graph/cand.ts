@@ -22,6 +22,10 @@ export class GraphCand {
     this.setTextGraphics();
   }
 
+  setVisible(visible: boolean) {
+    this.text.visible = visible;
+  }
+
   private setContainer() {
     this.container = new PIXI.Container();
     this.container.width = this.size.cell;
