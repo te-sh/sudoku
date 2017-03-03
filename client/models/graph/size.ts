@@ -1,4 +1,4 @@
-import { Board } from "models/board";
+import { Ground } from "models/board";
 import { Config } from "models/graph/config";
 
 export class Size {
@@ -7,7 +7,7 @@ export class Size {
   cell: number;
   board: { width: number, height: number };
 
-  constructor(board: Board, config: Config) {
+  constructor(ground: Ground, config: Config) {
     let border = {
       cand: config.cand.frame.width,
       cell: config.cell.frame.width
@@ -21,15 +21,15 @@ export class Size {
     this.cand = config.cand.text.size + padding.cand * 2 + border.cand;
 
     this.cands = {
-      width: board.candCols * this.cand + border.cand,
-      height: board.candRows * this.cand + border.cand
+      width: ground.candCols * this.cand + border.cand,
+      height: ground.candRows * this.cand + border.cand
     };
 
     this.cell = this.cands.width + padding.cell * 2 + border.cell;
 
     this.board = {
-      width: board.cols * this.cell + border.cell,
-      height: board.rows * this.cell + border.cell
+      width: ground.cols * this.cell + border.cell,
+      height: ground.rows * this.cell + border.cell
     };
   }
 }

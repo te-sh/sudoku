@@ -1,14 +1,17 @@
 import { Injectable } from "@angular/core";
 import { Http } from "@angular/http";
 import { BehaviorSubject } from "rxjs";
+import * as _ from "lodash";
 
-import { Board } from "models/board";
+import { Board, Ground, Cell } from "models/board";
 
 @Injectable()
 export class BoardService {
-  board$ = new BehaviorSubject<Board|undefined>(undefined);
+  ground$ = new BehaviorSubject<Ground|undefined>(undefined);
+  cells$ = new BehaviorSubject<Cell[]|undefined>(undefined);
 
-  private board: Board;
+  private ground: Ground;
+  private cells: Cell[];
 
   constructor(private http: Http) {
   }
@@ -17,20 +20,23 @@ export class BoardService {
     this.http.get("/board")
       .map(r => r.json())
       .subscribe(r => {
-        this.board = new Board(r);
-        this.board$.next(this.board);
+        let board = new Board(r);
+        this.ground = board.ground;
+        this.ground$.next(this.ground);
+        this.cells = board.cells;
+        this.cells$.next(this.cells);
       });
   }
 
   setValue(cursor: number, value?: number) {
-    let cell = this.board.cells[cursor];
+    let cell = this.cells[cursor];
     if (value) {
       cell.cands = undefined;
       cell.value = value;
     } else {
-      cell.cands = (1 << this.board.nc) - 1;
+      cell.cands = (1 << this.ground.nc) - 1;
       cell.value = undefined;
     }
-    this.board$.next(this.board);
+    this.cells$.next(_.clone(this.cells));
   }
 }

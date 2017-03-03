@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import * as _ from "lodash";
 
-import { Board, Cell } from "models/board";
+import { Ground, Cell } from "models/board";
 import { Config } from "models/graph/config";
 import { Size } from "models/graph/size";
 import { GraphCand } from "models/graph/cand";
@@ -10,6 +10,7 @@ import { Utils } from "models/graph/utils";
 export class GraphCell {
   container: PIXI.Container;
 
+  private cell: Cell;
   private frame: PIXI.Graphics;
   private cursor: PIXI.Graphics;
   private candsContainer = new PIXI.Container();
@@ -17,17 +18,19 @@ export class GraphCell {
 
   constructor(
     private config: Config,
-    private cell: Cell,
-    board: Board,
+    index: number,
+    ground: Ground,
     size: Size
   ) {
-    this.setContainer(board, size);
+    this.setContainer(index, ground, size);
     this.setFrameGraphics(size);
     this.setCursorGraphics(size);
-    this.setCands(board, size);
+    this.setCands(ground, size);
   }
 
-  update() {
+  update(cell: Cell) {
+    this.cell = cell;
+
     if (this.cell.cands) {
       this.cands.forEach((cand, index) => {
         cand.setVisible(this.cell.has(index));
@@ -36,19 +39,23 @@ export class GraphCell {
   }
 
   setEditMode(editMode: boolean) {
-    this.candsContainer.visible = !editMode && !!this.cell.cands;
+    if (this.cell) {
+      this.candsContainer.visible = !editMode && !!this.cell.cands;
+    }
   }
 
   setCursor(cursor: number) {
-    this.cursor.visible = this.cell.index === cursor;
+    if (this.cell) {
+      this.cursor.visible = this.cell.index === cursor;
+    }
   }
 
-  private setContainer(board: Board, size: Size) {
+  private setContainer(index: number, ground: Ground, size: Size) {
     this.container = new PIXI.Container();
     this.container.width = size.cell;
     this.container.height = size.cell;
 
-    let p = board.indexToPos(this.cell.index);
+    let p = ground.indexToPos(index);
     this.container.x = p.col * size.cell;
     this.container.y = p.row * size.cell;
   }
@@ -71,7 +78,7 @@ export class GraphCell {
     this.container.addChild(this.cursor);
   }
 
-  private setCands(board: Board, size: Size) {
+  private setCands(ground: Ground, size: Size) {
     this.candsContainer
 
     this.candsContainer.width = size.cands.width;
@@ -81,8 +88,8 @@ export class GraphCell {
     this.candsContainer.x = (s - size.cands.width) / 2;
     this.candsContainer.y = (s - size.cands.height) / 2;
 
-    this.cands = _.range(board.nc).map(cand => new GraphCand(
-      this.config, cand, board, size
+    this.cands = _.times(ground.nc, cand => new GraphCand(
+      this.config, cand, ground, size
     ));
 
     this.cands.forEach(cand => this.candsContainer.addChild(cand.container));

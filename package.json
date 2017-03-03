@@ -36,6 +36,7 @@
     "@angular/compiler-cli": "2.4.9",
     "@angular/platform-server": "2.4.9",
     "@types/core-js": "0.9.35",
+    "@types/geojson": "1.0.0",
     "@types/lodash": "4.14.54",
     "@types/node": "7.0.5",
     "@types/pixi.js": "4.3.2",

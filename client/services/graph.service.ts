@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 
-import { Board } from "models/board";
+import { Ground, Cell } from "models/board";
 import { GraphBoard } from "models/graph/board";
 
 export class GraphService {
@@ -20,15 +20,25 @@ export class GraphService {
     this.render();
   }
 
-  initBoard(board: Board) {
-    this.graphBoard.initBoard(board);
-    this.setEditMode(this.editMode, false);
+  initGround(ground: Ground) {
+    if (!ground) {
+      return;
+    }
+
+    this.graphBoard.initGround(ground);
     let size = this.graphBoard.size.board;
     this.renderer.resize(size.width, size.height);
     this.render();
   }
 
-  updateBoard() {
+  updateCells(cells: Cell[]) {
+    if (!cells) {
+      return;
+    }
+
+    this.graphBoard.updateCells(cells);
+    this.setEditMode(this.editMode, false);
+    this.render();
   }
 
   setEditMode(editMode: boolean, render = true) {

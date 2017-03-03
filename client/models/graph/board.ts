@@ -1,6 +1,7 @@
 import * as PIXI from "pixi.js";
+import * as _ from "lodash";
 
-import { Board } from "models/board";
+import { Ground, Cell } from "models/board";
 import { Config } from "models/graph/config";
 import { Size } from "models/graph/size";
 import { LatticePoint } from "models/graph/lattice_point";
@@ -11,45 +12,48 @@ export class GraphBoard {
   size: Size;
   stage = new PIXI.Container();
 
-  private board: Board;
+  private ground: Ground;
   private config = new Config();
-  private cells: GraphCell[];
-  private houses: GraphHouse[];
+  private graphCells: GraphCell[];
+  private graphHouses: GraphHouse[];
 
-  initBoard(board: Board) {
-    this.board = board;
-    this.size = new Size(this.board, this.config);
+  initGround(ground: Ground) {
+    let cells = ground.rows * ground.cols;
+
+    this.ground = ground;
+    this.size = new Size(this.ground, this.config);
 
     this.stage = new PIXI.Container();
 
-    this.cells = this.board.cells.map(cell => new GraphCell(
-      this.config, cell, this.board, this.size
-    ));
-    this.cells.forEach(cell => this.stage.addChild(cell.container));
 
-    let latticePoints = this.board.cells.map(cell => new LatticePoint(
-      cell.index, this.board, this.size
+    this.graphCells = _.times(cells, index => new GraphCell(
+      this.config, index, this.ground, this.size
+    ));
+    this.graphCells.forEach(graphCell => this.stage.addChild(graphCell.container));
+
+    let latticePoints = _.times(cells, index => new LatticePoint(
+      index, ground, this.size
     ));
 
-    this.houses = this.board.houses.map(house => new GraphHouse(
+    this.graphHouses = this.ground.houses.map(house => new GraphHouse(
       house, this.config, latticePoints
     ));
-    this.houses.forEach(house => this.stage.addChild(house.container));
+    this.graphHouses.forEach(graphHouse => this.stage.addChild(graphHouse.container));
   }
 
-  update() {
-    this.cells.forEach(cell => cell.update());
+  updateCells(cells: Cell[]) {
+    this.graphCells.forEach((graphCell, index) => graphCell.update(cells[index]));
   }
 
   setEditMode(editMode: boolean) {
-    if (this.cells) {
-      this.cells.forEach(cell => cell.setEditMode(editMode));
+    if (this.graphCells) {
+      this.graphCells.forEach(graphCell => graphCell.setEditMode(editMode));
     }
   }
 
   setCursor(cursor: number) {
-    if (this.cells) {
-      this.cells.forEach(cell => cell.setCursor(cursor));
+    if (this.graphCells) {
+      this.graphCells.forEach(graphCell => graphCell.setCursor(cursor));
     }
   }
 }

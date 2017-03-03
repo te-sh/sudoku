@@ -1,6 +1,6 @@
 import { Component, Input, AfterViewInit, ViewChild, ElementRef, OnChanges, SimpleChanges } from "@angular/core";
 
-import { Board } from "models/board";
+import { Ground, Cell } from "models/board";
 import { GraphService } from "services/graph.service";
 
 @Component({
@@ -8,7 +8,8 @@ import { GraphService } from "services/graph.service";
   templateUrl: "board.component.html"
 })
 export class BoardComponent implements AfterViewInit, OnChanges {
-  @Input() board: Board;
+  @Input() ground: Ground;
+  @Input() cells: Cell[];
   @ViewChild("container") container: ElementRef;
 
   constructor(private graphService: GraphService) {
@@ -19,12 +20,11 @@ export class BoardComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    let change = changes["board"];
-    if (change) {
-      if (this.board && change.previousValue !== change.currentValue) {
-        this.graphService.initBoard(this.board);
-      } else {
-      }
+    if (changes["ground"]) {
+      this.graphService.initGround(this.ground);
+    }
+    if (changes["cells"]) {
+      this.graphService.updateCells(this.cells);
     }
   }
 }

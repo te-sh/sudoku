@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 
-import { Board } from "models/board";
+import { Ground } from "models/board";
 import { Config } from "models/graph/config";
 import { Size } from "models/graph/size";
 import { Utils } from "models/graph/utils";
@@ -14,10 +14,10 @@ export class GraphCand {
   constructor(
     private config: Config,
     private cand: number,
-    board: Board,
+    ground: Ground,
     size: Size
   ) {
-    this.setContainer(board, size);
+    this.setContainer(ground, size);
     this.setFrameGraphics(size);
     this.setTextGraphics(size);
   }
@@ -26,12 +26,12 @@ export class GraphCand {
     this.text.visible = visible;
   }
 
-  private setContainer(board: Board, size: Size) {
+  private setContainer(ground: Ground, size: Size) {
     this.container = new PIXI.Container();
     this.container.width = size.cell;
     this.container.height = size.cell;
 
-    let p = board.candIndexToPos(this.cand);
+    let p = ground.candIndexToPos(this.cand);
     this.container.x = p.col * size.cand;
     this.container.y = p.row * size.cand;
   }

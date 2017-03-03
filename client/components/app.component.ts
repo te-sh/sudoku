@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 
-import { Board } from "models/board";
+import { Ground, Cell } from "models/board";
 import { BoardService } from "services/board.service";
 import { GraphService } from "services/graph.service";
 
@@ -10,7 +10,8 @@ import { GraphService } from "services/graph.service";
   templateUrl: "app.component.html"
 })
 export class AppComponent implements OnInit {
-  board$: Observable<Board>;
+  ground$: Observable<Ground>;
+  cells$: Observable<Cell[]>;
   editMode = false;
   cursor = 0;
 
@@ -21,7 +22,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.board$ = this.boardService.board$;
+    this.ground$ = this.boardService.ground$;
+    this.cells$ = this.boardService.cells$;
     this.boardService.init();
     this.graphService.setEditMode(this.editMode);
     this.graphService.setCursor(this.cursor);

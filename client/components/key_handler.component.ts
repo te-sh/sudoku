@@ -1,13 +1,13 @@
 import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 
-import { Board } from "models/board";
+import { Ground } from "models/board";
 
 @Component({
   selector: "sudoku-key-handler",
   template: ""
 })
 export class KeyHandlerComponent implements OnInit {
-  @Input() board: Board;
+  @Input() ground: Ground;
   @Input() editMode: boolean;
   @Input() cursor: number;
   @Output() cursorChange = new EventEmitter<number>();
@@ -36,10 +36,10 @@ export class KeyHandlerComponent implements OnInit {
   }
 
   private moveCursor(dx: number, dy: number) {
-    let p = this.board.indexToPos(this.cursor);
-    p.col = (p.col + dx + this.board.cols) % this.board.cols;
-    p.row = (p.row + dy + this.board.rows) % this.board.rows;
-    this.cursor = this.board.posToIndex(p);
+    let p = this.ground.indexToPos(this.cursor);
+    p.col = (p.col + dx + this.ground.cols) % this.ground.cols;
+    p.row = (p.row + dy + this.ground.rows) % this.ground.rows;
+    this.cursor = this.ground.posToIndex(p);
     this.cursorChange.emit(this.cursor);
   }
 }

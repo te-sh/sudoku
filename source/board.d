@@ -2,30 +2,28 @@ import std.algorithm, std.conv, std.range;
 
 class Board
 {
+  Ground ground;
+  Cell[] cells;
+
+  this(Ground ground, Cell[] cells)
+  {
+    this.ground = ground;
+    this.cells = cells;
+  }
+}
+
+class Ground
+{
   int rows, cols;
   int nc;
-  Cell[] cells;
   House[] houses;
 
-  this(int rows, int cols, int nc, Cell[] cells, House[] houses)
+  this(int rows, int cols, int nc, House[] houses)
   {
     this.rows = rows;
     this.cols = cols;
     this.nc = nc;
-    this.cells = cells;
     this.houses = houses;
-  }
-}
-
-class Cell
-{
-  int index;
-  int cands;
-
-  this(int index, int cands)
-  {
-    this.index = index;
-    this.cands = cands;
   }
 }
 
@@ -43,11 +41,22 @@ class House
   }
 }
 
+class Cell
+{
+  int index;
+  int cands;
+
+  this(int index, int cands)
+  {
+    this.index = index;
+    this.cands = cands;
+  }
+}
+
 Board simpleBoard()
 {
   auto rows = 9, cols = 9, nc = 9;
   auto cands = (1 << nc) - 1;
-  auto cells = (rows * cols).iota.map!(i => new Cell(i, cands)).array;
 
   House[] houses;
   foreach (r; rows.iota) {
@@ -74,5 +83,9 @@ Board simpleBoard()
       houses ~= house;
     }
 
-  return new Board(rows, cols, nc, cells, houses);
+  auto ground = new Ground(rows, cols, nc, houses);
+
+  auto cells = (rows * cols).iota.map!(i => new Cell(i, cands)).array;
+
+  return new Board(ground, cells);
 }

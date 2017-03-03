@@ -1,10 +1,19 @@
 export class Board {
+  ground: Ground;
+  cells: Cell[];
+
+  constructor(json: any) {
+    this.ground = new Ground(json.ground);
+    this.cells = json.cells.map((js: any) => new Cell(this.ground.nc, js));
+  }
+}
+
+export class Ground {
   rows: number;
   cols: number;
   nc: number;
   candRows: number;
   candCols: number;
-  cells: Cell[];
   houses: House[];
 
   constructor(json: any) {
@@ -13,7 +22,6 @@ export class Board {
     this.nc = json.nc;
     this.candRows = Math.floor(Math.sqrt(this.nc));
     this.candCols = Math.ceil(Math.sqrt(this.nc));
-    this.cells = json.cells.map((js: any) => new Cell(this.nc, js));
     this.houses = json.houses.map((js: any) => new House(js));
   }
 
@@ -27,6 +35,18 @@ export class Board {
 
   candIndexToPos(index: number) {
     return { col: index % this.candCols, row: Math.floor(index / this.candRows) };
+  }
+}
+
+export class House {
+  index: number;
+  type: string;
+  cells: number[];
+
+  constructor(json: any) {
+    this.index = json.index;
+    this.type = json.type;
+    this.cells = json.cells;
   }
 }
 
@@ -46,17 +66,5 @@ export class Cell {
 
   has(cand: number) {
     return !!this.cands && (this.cands & (1 << cand)) !== 0;
-  }
-}
-
-export class House {
-  index: number;
-  type: string;
-  cells: number[];
-
-  constructor(json: any) {
-    this.index = json.index;
-    this.type = json.type;
-    this.cells = json.cells;
   }
 }

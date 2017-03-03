@@ -3,10 +3,11 @@
     (editModeChange)="setEditMode($event)">
 </sudoku-toolbar>
 <sudoku-board
-    [board]="board$ | async">
+    [ground]="ground$ | async"
+    [cells]="cells$ | async">
 </sudoku-board>
 <sudoku-key-handler
-    [board]="board$ | async"
+    [ground]="ground$ | async"
     [editMode]="editMode"
     [(cursor)]="cursor"
     (cursorChange)="setCursor($event)">
