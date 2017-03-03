@@ -61,7 +61,7 @@ export class ConfigHouse {
 class ConfigColor {
   color?: number;
   colors?: number[];
-  
+
   constructor(json: any) {
     if (json.color) {
       this.color = parseInt(json.color, 16);

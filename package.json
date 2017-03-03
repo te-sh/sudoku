@@ -23,7 +23,7 @@
     "@angular/material": "2.0.0-beta.2",
     "@angular/platform-browser": "2.4.9",
     "@angular/platform-browser-dynamic": "2.4.9",
-    "@turf/turf": "3.10.4",
+    "@turf/turf": "3.10.5",
     "core-js": "2.4.1",
     "lodash": "4.17.4",
     "pixi.js": "4.4.1",

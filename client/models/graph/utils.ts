@@ -1,4 +1,5 @@
 import * as PIXI from "pixi.js";
+import * as _ from "lodash";
 
 import { ConfigRect, ConfigText } from "models/graph/config";
 
@@ -24,5 +25,15 @@ export class Utils {
     t.y = (size - t.height) / 2;
 
     return t;
+  }
+
+  static buildPoly(points: number[][], config: ConfigRect, color: number) {
+    let g = new PIXI.Graphics();
+    let width = config.width;
+
+    g.lineStyle(width, color);
+    g.drawPolygon(_.flatten(points).map(p => p + width / 2));
+
+    return g;
   }
 }

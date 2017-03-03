@@ -9,8 +9,9 @@ import { Utils } from "models/graph/utils";
 
 export class GraphCell {
   container: PIXI.Container;
-  frame: PIXI.Graphics;
-  cands: GraphCand[];
+
+  private frame: PIXI.Graphics;
+  private cands: GraphCand[];
 
   constructor(
     private board: Board,
@@ -34,10 +35,11 @@ export class GraphCell {
   }
 
   private setFrame() {
-    let config = this.config.cell.frame;
-    let color = this.config.cell.frame.color!;
-    let size = this.size.cell;
-    this.frame = Utils.buildRect(config, color, size);
+    this.frame = Utils.buildRect(
+      this.config.cell.frame,
+      this.config.cell.frame.color!,
+      this.size.cell
+    );
     this.container.addChild(this.frame);
   }
 
@@ -50,9 +52,9 @@ export class GraphCell {
     candsContainer.x = (s - this.size.cands.width) / 2;
     candsContainer.y = (s - this.size.cands.height) / 2;
 
-    this.cands = _.map(new Array(this.board.nc), (_, cand) => {
-      return new GraphCand(this.board, cand, this.config, this.size)
-    });
+    this.cands = _.map(new Array(this.board.nc), (_, cand) => new GraphCand(
+      this.board, cand, this.config, this.size
+    ));
 
     this.cands.forEach(cand => candsContainer.addChild(cand.container));
 
