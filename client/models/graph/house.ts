@@ -21,7 +21,7 @@ export class GraphHouse {
     this.setContainer();
     this.setPoints();
     if (house.type === "box") {
-      this.setFrame();
+      this.setFrameGraphics();
     }
   }
 
@@ -44,7 +44,7 @@ export class GraphHouse {
     this.container = new PIXI.Container();
   }
 
-  private setFrame() {
+  private setFrameGraphics() {
     this.frame = Utils.buildPoly(
       this.points,
       this.config.house.frame,

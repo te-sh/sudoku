@@ -1,4 +1,5 @@
-<sudoku-toolbar>
+<sudoku-toolbar [(editMode)]="editMode"
+                (editModeChange)="changeEditMode($event)">
 </sudoku-toolbar>
 <sudoku-board [board]="boardService.board$ | async">
 </sudoku-board>

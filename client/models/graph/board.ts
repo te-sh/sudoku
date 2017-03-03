@@ -10,21 +10,18 @@ import { GraphHouse } from "models/graph/house";
 
 export class GraphBoard {
   size: Size;
-  stage: PIXI.Container;
+  stage = new PIXI.Container();
 
   private board: Board;
-  private config: Config;
+  private config = new Config();
   private cells: GraphCell[];
   private houses: GraphHouse[];
-
-  constructor() {
-    this.config = new Config();
-    this.stage = new PIXI.Container();
-  }
 
   initBoard(board: Board) {
     this.board = board;
     this.size = new Size(this.board, this.config);
+
+    this.stage = new PIXI.Container();
 
     this.cells = _.map(this.board.cells, cell => new GraphCell(
       this.board, cell, this.config, this.size
@@ -39,5 +36,17 @@ export class GraphBoard {
       this.board, house, this.config, latticePoints
     ));
     this.houses.forEach(house => this.stage.addChild(house.container));
+  }
+
+  setEditMode(editMode: boolean) {
+    if (this.cells) {
+      this.cells.forEach(cell => cell.setEditMode(editMode));
+    }
+  }
+
+  setCursor(cursor: number) {
+    if (this.cells) {
+      this.cells.forEach(cell => cell.setCursor(cursor));
+    }
   }
 }

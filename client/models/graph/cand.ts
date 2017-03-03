@@ -18,8 +18,8 @@ export class GraphCand {
     private size: Size
   ) {
     this.setContainer();
-    this.setFrame();
-    this.setText();
+    this.setFrameGraphics();
+    this.setTextGraphics();
   }
 
   private setContainer() {
@@ -32,7 +32,7 @@ export class GraphCand {
     this.container.y = p.row * this.size.cand;
   }
 
-  private setFrame() {
+  private setFrameGraphics() {
     this.frame = Utils.buildRect(
       this.config.cand.frame,
       this.config.cand.frame.color!,
@@ -41,7 +41,7 @@ export class GraphCand {
     this.container.addChild(this.frame);
   }
 
-  private setText() {
+  private setTextGraphics() {
     this.text = Utils.buildText(
       (this.cand + 1).toString(),
       this.config.cand.text,

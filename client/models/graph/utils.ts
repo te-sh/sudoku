@@ -7,9 +7,12 @@ export class Utils {
   static buildRect(config: ConfigRect, color: number, size: number) {
     let g = new PIXI.Graphics();
     let width = config.width;
+    let offset = config.offset;
 
     g.lineStyle(width, color);
-    g.drawRect(width / 2, width / 2, size, size);
+    let xy = width / 2 + offset;
+    let wh = size - offset * 2 - width + 1;
+    g.drawRect(xy, xy, wh, wh);
 
     return g;
   }

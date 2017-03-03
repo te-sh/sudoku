@@ -25,7 +25,7 @@ export class ConfigCell {
     this.text = new ConfigText(js.text);
     this.frame = new ConfigRect(js.frame);
     this.markRect = new ConfigRect(js.markRect);
-    this.cursor = new ConfigRect(js.markRect);
+    this.cursor = new ConfigRect(js.cursor);
   }
 }
 

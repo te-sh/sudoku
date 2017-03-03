@@ -11,6 +11,8 @@ export class GraphCell {
   container: PIXI.Container;
 
   private frame: PIXI.Graphics;
+  private cursor: PIXI.Graphics;
+  private candsContainer = new PIXI.Container();
   private cands: GraphCand[];
 
   constructor(
@@ -20,8 +22,17 @@ export class GraphCell {
     private size: Size
   ) {
     this.setContainer();
-    this.setFrame();
+    this.setFrameGraphics();
+    this.setCursorGraphics();
     this.setCands();
+  }
+
+  setEditMode(editMode: boolean) {
+    this.candsContainer.visible = !editMode && !!this.cell.cands;
+  }
+
+  setCursor(cursor: number) {
+    this.cursor.visible = this.cell.index === cursor;
   }
 
   private setContainer() {
@@ -34,7 +45,7 @@ export class GraphCell {
     this.container.y = p.row * this.size.cell;
   }
 
-  private setFrame() {
+  private setFrameGraphics() {
     this.frame = Utils.buildRect(
       this.config.cell.frame,
       this.config.cell.frame.color!,
@@ -43,21 +54,31 @@ export class GraphCell {
     this.container.addChild(this.frame);
   }
 
+  private setCursorGraphics() {
+    this.cursor = Utils.buildRect(
+      this.config.cell.cursor,
+      this.config.cell.cursor.color!,
+      this.size.cell
+    );
+    this.container.addChild(this.cursor);
+  }
+
   private setCands() {
-    let candsContainer = new PIXI.Container();
-    candsContainer.width = this.size.cands.width;
-    candsContainer.height = this.size.cands.height;
+    this.candsContainer
+
+    this.candsContainer.width = this.size.cands.width;
+    this.candsContainer.height = this.size.cands.height;
 
     let s = this.size.cell + this.config.cell.frame.width;
-    candsContainer.x = (s - this.size.cands.width) / 2;
-    candsContainer.y = (s - this.size.cands.height) / 2;
+    this.candsContainer.x = (s - this.size.cands.width) / 2;
+    this.candsContainer.y = (s - this.size.cands.height) / 2;
 
     this.cands = _.map(new Array(this.board.nc), (_, cand) => new GraphCand(
       this.board, cand, this.config, this.size
     ));
 
-    this.cands.forEach(cand => candsContainer.addChild(cand.container));
+    this.cands.forEach(cand => this.candsContainer.addChild(cand.container));
 
-    this.container.addChild(candsContainer);
+    this.container.addChild(this.candsContainer);
   }
 }
