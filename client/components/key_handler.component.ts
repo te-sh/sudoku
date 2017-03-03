@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 
 import { Ground } from "models/board";
+import { BoardService } from "services/board.service";
 
 @Component({
   selector: "sudoku-key-handler",
@@ -12,34 +13,45 @@ export class KeyHandlerComponent implements OnInit {
   @Input() cursor: number;
   @Output() cursorChange = new EventEmitter<number>();
 
-  ngOnInit() {
-    window.addEventListener("keydown", (key) => {
-      if (!this.editMode) {
-        return;
-      }
-
-      switch (key.keyCode) {
-      case 37:
-        this.moveCursor(-1, 0);
-        break;
-      case 38:
-        this.moveCursor(0, -1);
-        break;
-      case 39:
-        this.moveCursor(1, 0);
-        break;
-      case 40:
-        this.moveCursor(0, 1);
-        break;
-      }
-    });
+  constructor(private boardService: BoardService) {
   }
 
-  private moveCursor(dx: number, dy: number) {
+  ngOnInit() {
+    window.addEventListener("keydown", (key) => this.handleKey(key.keyCode));
+  }
+
+  private handleKey(code: number) {
+    if (!this.editMode) {
+      return;
+    }
+
+    const deltas = [{ x: -1, y: 0 }, { x: 0, y: -1 }, { x: 1, y: 0 }, { x: 0, y: 1 }];
+    if (code >= 37 && code <= 40) {
+      this.moveCursor(deltas[code - 37]);
+    }
+
+    if (code >= 49 && code <= 57) {
+      this.setValue(code - 49);
+    }
+
+    if (code >= 97 && code <= 105) {
+      this.setValue(code - 97);
+    }
+
+    if (code === 110 || code === 190) {
+      this.setValue(undefined);
+    }
+  }
+
+  private moveCursor(d: { x: number, y: number }) {
     let p = this.ground.indexToPos(this.cursor);
-    p.col = (p.col + dx + this.ground.cols) % this.ground.cols;
-    p.row = (p.row + dy + this.ground.rows) % this.ground.rows;
+    p.col = (p.col + d.x + this.ground.cols) % this.ground.cols;
+    p.row = (p.row + d.y + this.ground.rows) % this.ground.rows;
     this.cursor = this.ground.posToIndex(p);
     this.cursorChange.emit(this.cursor);
+  }
+
+  private setValue(value?: number) {
+    this.boardService.setValue(this.cursor, value);
   }
 }

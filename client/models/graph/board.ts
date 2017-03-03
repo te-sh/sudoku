@@ -25,7 +25,6 @@ export class GraphBoard {
 
     this.stage = new PIXI.Container();
 
-
     this.graphCells = _.times(cells, index => new GraphCell(
       this.config, index, this.ground, this.size
     ));

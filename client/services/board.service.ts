@@ -30,12 +30,12 @@ export class BoardService {
 
   setValue(cursor: number, value?: number) {
     let cell = this.cells[cursor];
-    if (value) {
-      cell.cands = undefined;
-      cell.value = value;
-    } else {
+    if (_.isUndefined(value)) {
       cell.cands = (1 << this.ground.nc) - 1;
-      cell.value = undefined;
+      delete cell.value;
+    } else {
+      delete cell.cands;
+      cell.value = value;
     }
     this.cells$.next(_.clone(this.cells));
   }
