@@ -9,6 +9,7 @@ import { GraphService } from "services/graph.service";
 import { AppComponent } from "components/app.component";
 import { ToolbarComponent } from "components/toolbar.component";
 import { BoardComponent } from "components/board.component";
+import { KeyHandlerComponent } from "components/key_handler.component";
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { BoardComponent } from "components/board.component";
   declarations: [
     AppComponent,
     ToolbarComponent,
-    BoardComponent
+    BoardComponent,
+    KeyHandlerComponent
   ],
   providers: [
     BoardService,

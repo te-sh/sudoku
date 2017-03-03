@@ -21,6 +21,10 @@ export class Board {
     return { col: index % this.cols, row: Math.floor(index / this.rows) };
   }
 
+  posToIndex(pos: { col: number, row: number }) {
+    return pos.row * this.cols + pos.col;
+  }
+
   candIndexToPos(index: number) {
     return { col: index % this.candCols, row: Math.floor(index / this.candRows) };
   }

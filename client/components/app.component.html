@@ -1,5 +1,13 @@
-<sudoku-toolbar [(editMode)]="editMode"
-                (editModeChange)="changeEditMode($event)">
+<sudoku-toolbar
+    [(editMode)]="editMode"
+    (editModeChange)="setEditMode($event)">
 </sudoku-toolbar>
-<sudoku-board [board]="boardService.board$ | async">
+<sudoku-board
+    [board]="board$ | async">
 </sudoku-board>
+<sudoku-key-handler
+    [board]="board$ | async"
+    [editMode]="editMode"
+    [(cursor)]="cursor"
+    (cursorChange)="setCursor($event)">
+</sudoku-key-handler>
