@@ -41,7 +41,15 @@ export class GraphBoard {
   }
 
   updateCells(cells: Cell[]) {
-    this.graphCells.forEach((graphCell, index) => graphCell.update(cells[index]));
+    if (this.graphCells) {
+      this.graphCells.forEach((graphCell, index) => graphCell.update(cells[index]));
+    }
+  }
+
+  updateProblems(problems: boolean[]) {
+    if (this.graphCells) {
+      this.graphCells.forEach((graphCell, index) => graphCell.updateProblem(problems[index]));
+    }
   }
 
   setEditMode(editMode: boolean) {

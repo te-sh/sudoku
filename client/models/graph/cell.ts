@@ -15,7 +15,7 @@ export class GraphCell {
   private texts: PIXI.Text[];
   private cursor: PIXI.Graphics;
   private candsContainer = new PIXI.Container();
-  private cands: GraphCand[];
+  private graphCands: GraphCand[];
 
   constructor(
     private config: Config,
@@ -37,8 +37,8 @@ export class GraphCell {
       this.texts.forEach(text => {
         text.visible = false;
       });
-      this.cands.forEach((cand, index) => {
-        cand.setVisible(this.cell.has(index));
+      this.graphCands.forEach((graphCand, index) => {
+        graphCand.setVisible(this.cell.has(index));
       });
     }
 
@@ -49,6 +49,13 @@ export class GraphCell {
         text.visible = this.cell.value == index;
       });
     }
+  }
+
+  updateProblem(problem: boolean) {
+    let color = this.config.cell.text.colors![problem ? 0 : 1];
+    this.texts.forEach(text => {
+      text.style.fill = color;
+    });
   }
 
   setEditMode(editMode: boolean) {
@@ -89,7 +96,9 @@ export class GraphCell {
       this.config.cell.text.colors![0],
       size.cell + this.config.cell.frame.width
     ));
-    this.texts.forEach(text => this.container.addChild(text));
+    this.texts.forEach(text => {
+      this.container.addChild(text);
+    });
   }
 
   private setCursorGraphics(size: Size) {
@@ -111,11 +120,13 @@ export class GraphCell {
     this.candsContainer.x = (s - size.cands.width) / 2;
     this.candsContainer.y = (s - size.cands.height) / 2;
 
-    this.cands = _.times(ground.nc, cand => new GraphCand(
+    this.graphCands = _.times(ground.nc, cand => new GraphCand(
       this.config, cand, ground, size
     ));
 
-    this.cands.forEach(cand => this.candsContainer.addChild(cand.container));
+    this.graphCands.forEach(graphCand => {
+      this.candsContainer.addChild(graphCand.container);
+    });
 
     this.container.addChild(this.candsContainer);
   }

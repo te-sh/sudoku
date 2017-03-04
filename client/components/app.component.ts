@@ -12,6 +12,7 @@ import { GraphService } from "services/graph.service";
 export class AppComponent implements OnInit {
   ground$: Observable<Ground>;
   cells$: Observable<Cell[]>;
+  problems$: Observable<boolean[]>;
   editMode = false;
   cursor = 0;
 
@@ -24,6 +25,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.ground$ = this.boardService.ground$;
     this.cells$ = this.boardService.cells$;
+    this.problems$ = this.boardService.problems$;
+
     this.boardService.init();
     this.graphService.setEditMode(this.editMode);
     this.graphService.setCursor(this.cursor);

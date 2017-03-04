@@ -21,10 +21,6 @@ export class GraphService {
   }
 
   initGround(ground: Ground) {
-    if (!ground) {
-      return;
-    }
-
     this.graphBoard.initGround(ground);
     let size = this.graphBoard.size.board;
     this.renderer.resize(size.width, size.height);
@@ -32,12 +28,13 @@ export class GraphService {
   }
 
   updateCells(cells: Cell[]) {
-    if (!cells) {
-      return;
-    }
-
     this.graphBoard.updateCells(cells);
     this.setEditMode(this.editMode, false);
+    this.render();
+  }
+
+  updateProblems(problems: boolean[]) {
+    this.graphBoard.updateProblems(problems);
     this.render();
   }
 

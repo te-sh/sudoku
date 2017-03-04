@@ -1,5 +1,3 @@
-/// <reference types="geojson" />
-
 import * as PIXI from "pixi.js";
 import * as turf from "@turf/turf";
 
@@ -37,8 +35,8 @@ export class GraphHouse {
         [p.left, p.top]
       ]]);
     });
-    let unioned = cellPolys.reduce((p1, p2) => (turf.union(p1, p2) as GeoJSON.Feature<GeoJSON.Polygon>));
-    let poly = turf.simplify(unioned, 0.1, false) as GeoJSON.Feature<GeoJSON.Polygon>;
+    let unioned = turf.union(...cellPolys);
+    let poly = turf.simplify(unioned, 0.1, false);
     this.points = poly.geometry.coordinates[0];
   }
 

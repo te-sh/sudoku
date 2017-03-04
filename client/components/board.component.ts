@@ -1,4 +1,5 @@
-import { Component, Input, AfterViewInit, ViewChild, ElementRef, OnChanges, SimpleChanges } from "@angular/core";
+import { Component, Input, AfterViewInit, ViewChild, ElementRef } from "@angular/core";
+import { Observable } from "rxjs";
 
 import { Ground, Cell } from "models/board";
 import { GraphService } from "services/graph.service";
@@ -7,9 +8,10 @@ import { GraphService } from "services/graph.service";
   selector: "sudoku-board",
   templateUrl: "board.component.html"
 })
-export class BoardComponent implements AfterViewInit, OnChanges {
-  @Input() ground: Ground;
-  @Input() cells: Cell[];
+export class BoardComponent implements AfterViewInit {
+  @Input() ground: Observable<Ground>;
+  @Input() cells: Observable<Cell[]>;
+  @Input() problems: Observable<boolean[]>;
   @ViewChild("container") container: ElementRef;
 
   constructor(private graphService: GraphService) {
@@ -17,14 +19,23 @@ export class BoardComponent implements AfterViewInit, OnChanges {
 
   ngAfterViewInit() {
     this.graphService.init(this.container.nativeElement);
-  }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes["ground"]) {
-      this.graphService.initGround(this.ground);
-    }
-    if (changes["cells"]) {
-      this.graphService.updateCells(this.cells);
-    }
+    this.ground.subscribe(ground => {
+      if (ground) {
+        this.graphService.initGround(ground);
+      }
+    });
+
+    this.cells.subscribe(cells => {
+      if (cells) {
+        this.graphService.updateCells(cells);
+      }
+    });
+
+    this.problems.subscribe(problems => {
+      if (problems) {
+        this.graphService.updateProblems(problems);
+      }
+    });
   }
 }

@@ -3,8 +3,9 @@
     (editModeChange)="setEditMode($event)">
 </sudoku-toolbar>
 <sudoku-board
-    [ground]="ground$ | async"
-    [cells]="cells$ | async">
+    [ground]="ground$"
+    [cells]="cells$"
+    [problems]="problems$">
 </sudoku-board>
 <sudoku-key-handler
     [ground]="ground$ | async"

@@ -1,10 +1,18 @@
+import * as _ from "lodash";
+
 export class Board {
   ground: Ground;
   cells: Cell[];
+  problems: boolean[];
 
   constructor(json: any) {
     this.ground = new Ground(json.ground);
     this.cells = json.cells.map((js: any) => new Cell(this.ground.nc, js));
+    if (json.problems) {
+      this.problems = json.problems;
+    } else {
+      this.problems = _.times(this.cells.length, _.constant(false));
+    }
   }
 }
 
@@ -66,5 +74,15 @@ export class Cell {
 
   has(cand: number) {
     return !!this.cands && (this.cands & (1 << cand)) !== 0;
+  }
+
+  setValue(nc: number, value?: number) {
+    if (_.isUndefined(value)) {
+      this.cands = (1 << nc) - 1;
+      delete this.value;
+    } else {
+      delete this.cands;
+      this.value = value;
+    }
   }
 }
