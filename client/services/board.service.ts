@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { Http } from "@angular/http";
 import { BehaviorSubject } from "rxjs";
 import * as _ from "lodash";
+import * as fileSaver from "file-saver";
+import * as JSZip from "jszip";
 
 import { Board, Ground, Cell } from "models/board";
 
@@ -55,5 +57,20 @@ export class BoardService {
     this.problems = _.clone(this.problems);
     this.problems[cursor] = !_.isUndefined(value);
     this.problems$.next(this.problems);
+  }
+
+  download(fileName: string) {
+    let json = JSON.stringify({
+      ground: this.ground,
+      cells: this.cells,
+      problems: this.problems
+    });
+    let zip = new JSZip();
+    zip.file("board.json", json);
+    zip.generateAsync({ type: "blob", compression: "DEFLATE" })
+      .then(content => {
+        let blob = new Blob([content], { type: "application/octed-stream" });
+        fileSaver.saveAs(blob, fileName);
+      });
   }
 }

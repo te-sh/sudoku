@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { MdDialog } from "@angular/material";
 
 import { BoardService } from "services/board.service";
+import { DownloadDialogComponent } from "./download_dialog.component";
 
 @Component({
   selector: "sudoku-toolbar",
@@ -10,7 +12,10 @@ export class ToolbarComponent {
   @Input() editMode: boolean;
   @Output() editModeChange = new EventEmitter<boolean>();
 
-  constructor(private boardService: BoardService) {
+  constructor(
+    private boardService: BoardService,
+    private dialog: MdDialog
+  ) {
   }
 
   changeEditMode() {
@@ -20,5 +25,14 @@ export class ToolbarComponent {
 
   clear() {
     this.boardService.clear();
+  }
+
+  download() {
+    let dialogRef = this.dialog.open(DownloadDialogComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.boardService.download(result);
+      }
+    });
   }
 }

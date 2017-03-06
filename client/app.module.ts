@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
+import { FormsModule } from "@angular/forms";
 import { MaterialModule } from "@angular/material";
 import { FlexLayoutModule } from "@angular/flex-layout";
 
@@ -10,10 +11,12 @@ import { AppComponent } from "components/app.component";
 import { ToolbarComponent } from "components/toolbar.component";
 import { BoardComponent } from "components/board.component";
 import { KeyHandlerComponent } from "components/key_handler.component";
+import { DownloadDialogComponent } from "components/download_dialog.component";
 
 @NgModule({
   imports: [
     BrowserModule,
+    FormsModule,
     MaterialModule.forRoot(),
     FlexLayoutModule.forRoot()
   ],
@@ -21,11 +24,15 @@ import { KeyHandlerComponent } from "components/key_handler.component";
     AppComponent,
     ToolbarComponent,
     BoardComponent,
-    KeyHandlerComponent
+    KeyHandlerComponent,
+    DownloadDialogComponent
   ],
   providers: [
     BoardService,
     GraphService
+  ],
+  entryComponents: [
+    DownloadDialogComponent
   ],
   bootstrap: [
     AppComponent

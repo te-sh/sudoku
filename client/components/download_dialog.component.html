@@ -1,0 +1,10 @@
+<h1 md-dialog-title>Download Board</h1>
+<div md-dialog-content>
+  <md-input-container>
+    <input mdInput placeholder="File Name" [(ngModel)]="fileName">
+  </md-input-container>
+</div>
+<div md-dialog-actions>
+  <button md-button (click)="dialogRef.close(fileName)">Download</button>
+  <button md-button (click)="dialogRef.close()">Cancel</button>
+</div>
