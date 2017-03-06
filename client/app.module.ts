@@ -12,6 +12,7 @@ import { ToolbarComponent } from "components/toolbar.component";
 import { BoardComponent } from "components/board.component";
 import { KeyHandlerComponent } from "components/key_handler.component";
 import { DownloadDialogComponent } from "components/download_dialog.component";
+import { UploadDialogComponent } from "components/upload_dialog.component";
 
 @NgModule({
   imports: [
@@ -25,14 +26,16 @@ import { DownloadDialogComponent } from "components/download_dialog.component";
     ToolbarComponent,
     BoardComponent,
     KeyHandlerComponent,
-    DownloadDialogComponent
+    DownloadDialogComponent,
+    UploadDialogComponent
   ],
   providers: [
     BoardService,
     GraphService
   ],
   entryComponents: [
-    DownloadDialogComponent
+    DownloadDialogComponent,
+    UploadDialogComponent
   ],
   bootstrap: [
     AppComponent

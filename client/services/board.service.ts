@@ -25,12 +25,7 @@ export class BoardService {
       .map(r => r.json())
       .subscribe(r => {
         let board = new Board(r);
-        this.ground = board.ground;
-        this.ground$.next(this.ground);
-        this.cells = board.cells;
-        this.cells$.next(this.cells);
-        this.problems = board.problems;
-        this.problems$.next(this.problems);
+        this.setBoard(board);
       });
   }
 
@@ -72,5 +67,29 @@ export class BoardService {
         let blob = new Blob([content], { type: "application/octed-stream" });
         fileSaver.saveAs(blob, fileName);
       });
+  }
+
+  upload(file: File) {
+    let reader = new FileReader();
+    reader.onload = () => {
+      let zip = new JSZip();
+      zip.loadAsync(reader.result)
+        .then(extracted => {
+          extracted.file("board.json").async("string").then(json => {
+            let board = new Board(JSON.parse(json));
+            this.setBoard(board);
+          });
+        });
+    };
+    reader.readAsBinaryString(file);
+  }
+
+  private setBoard(board: Board) {
+    this.ground = board.ground;
+    this.ground$.next(this.ground);
+    this.cells = board.cells;
+    this.cells$.next(this.cells);
+    this.problems = board.problems;
+    this.problems$.next(this.problems);
   }
 }

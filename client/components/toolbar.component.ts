@@ -3,6 +3,7 @@ import { MdDialog } from "@angular/material";
 
 import { BoardService } from "services/board.service";
 import { DownloadDialogComponent } from "./download_dialog.component";
+import { UploadDialogComponent } from "./upload_dialog.component";
 
 @Component({
   selector: "sudoku-toolbar",
@@ -32,6 +33,15 @@ export class ToolbarComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.boardService.download(result);
+      }
+    });
+  }
+
+  upload() {
+    let dialogRef = this.dialog.open(UploadDialogComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.boardService.upload(result);
       }
     });
   }
