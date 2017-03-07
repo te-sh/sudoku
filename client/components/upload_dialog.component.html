@@ -3,6 +3,15 @@
   <input type="file" (change)="file = $event.srcElement.files[0]">
 </div>
 <div md-dialog-actions>
-  <button md-button (click)="dialogRef.close(file)">Upload</button>
-  <button md-button (click)="dialogRef.close()">Cancel</button>
+  <div [fxLayout] fxLayoutAlign="center">
+    <button md-button
+            [disabled]="!file"
+            (click)="dialogRef.close(file)">
+      Upload
+    </button>
+    <button md-button
+            (click)="dialogRef.close()">
+      Cancel
+    </button>
+  </div>
 </div>

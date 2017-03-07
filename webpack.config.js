@@ -36,11 +36,17 @@ let config = {
       },
       {
         test: /\.css/,
-        loader: 'style-loader!css-loader'
+        loaders: ['style-loader', 'css-loader']
       },
       {
         test: /\.scss$/,
-        loader: 'style-loader!css-loader!sass-loader'
+        exclude: [/style\.scss$/],
+        loaders: ['raw-loader', 'sass-loader']
+      },
+      {
+        test: /\.scss$/,
+        include: [/style\.scss$/],
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.svg$/,

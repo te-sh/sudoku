@@ -5,6 +5,15 @@
   </md-input-container>
 </div>
 <div md-dialog-actions>
-  <button md-button (click)="dialogRef.close(fileName)">Download</button>
-  <button md-button (click)="dialogRef.close()">Cancel</button>
+  <div [fxLayout] fxLayoutAlign="center">
+    <button md-button
+            [disabled]="!fileName"
+            (click)="dialogRef.close(fileName)">
+      Download
+    </button>
+    <button md-button
+            (click)="dialogRef.close()">
+      Cancel
+    </button>
+  </div>
 </div>
