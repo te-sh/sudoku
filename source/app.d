@@ -1,6 +1,6 @@
 import vibe.vibe;
 
-import board;
+import serialize;
 
 void getBoard(HTTPServerRequest req, HTTPServerResponse res)
 {
