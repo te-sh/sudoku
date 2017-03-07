@@ -1,16 +1,17 @@
+import { Injectable } from "@angular/core";
 import * as PIXI from "pixi.js";
 
-import { Ground } from "models/board";
-import { Cell } from "models/cell";
 import { GraphBoard } from "models/graph/board";
+import { BoardService } from "services/board.service";
 
+@Injectable()
 export class GraphService {
   private renderer: PIXI.WebGLRenderer | PIXI.CanvasRenderer;
   private graphBoard: GraphBoard;
   private editMode: boolean;
   private cursor: number;
 
-  constructor() {
+  constructor(private boardService: BoardService) {
     this.renderer = PIXI.autoDetectRenderer(1, 1);
     this.renderer.backgroundColor = 0xffffff;
     this.graphBoard = new GraphBoard();
@@ -18,25 +19,28 @@ export class GraphService {
 
   init(element: any) {
     element.appendChild(this.renderer.view);
+    this.setUpdates();
     this.render();
   }
 
-  initGround(ground: Ground) {
-    this.graphBoard.initGround(ground);
-    let size = this.graphBoard.size.board;
-    this.renderer.resize(size.width, size.height);
-    this.render();
-  }
+  private setUpdates() {
+    this.boardService.ground$.subscribe(ground => {
+      this.graphBoard.initGround(ground);
+      let size = this.graphBoard.size.board;
+      this.renderer.resize(size.width, size.height);
+      this.render();
+    });
 
-  updateCells(cells: Cell[]) {
-    this.graphBoard.updateCells(cells);
-    this.setEditMode(this.editMode, false);
-    this.render();
-  }
+    this.boardService.cells$.subscribe(cells => {
+      this.graphBoard.updateCells(cells);
+      this.setEditMode(this.editMode, false);
+      this.render();
+    });
 
-  updateProblems(problems: boolean[]) {
-    this.graphBoard.updateProblems(problems);
-    this.render();
+    this.boardService.problems$.subscribe(problems => {
+      this.graphBoard.updateProblems(problems);
+      this.render();
+    });
   }
 
   setEditMode(editMode: boolean, render = true) {

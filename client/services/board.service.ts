@@ -10,49 +10,57 @@ import { Cell } from "models/cell";
 
 @Injectable()
 export class BoardService {
-  ground$ = new BehaviorSubject<Ground|undefined>(undefined);
-  cells$ = new BehaviorSubject<Cell[]|undefined>(undefined);
-  problems$ = new BehaviorSubject<boolean[]|undefined>(undefined);
-
-  private ground: Ground;
-  private cells: Cell[];
-  private problems: boolean[];
+  ground$ = new BehaviorSubject<Ground>(new Ground(0, 0, 0, []));
+  cells$ = new BehaviorSubject<Cell[]>([]);
+  problems$ = new BehaviorSubject<boolean[]>([]);
 
   constructor(private http: Http) {
+  }
+
+  get ground() {
+    return this.ground$.getValue();
+  }
+
+  get cells() {
+    return this.cells$.getValue();
+  }
+
+  get problems() {
+    return this.problems$.getValue();
   }
 
   init() {
     this.http.get("/board")
       .map(r => r.json())
       .subscribe(r => {
-        let board = new Board(r);
+        let board = Board.fromJson(r);
         this.setBoard(board);
       });
   }
 
   clear() {
-    this.cells = _.cloneDeep(this.cells);
-    this.cells.forEach(cell => {
+    let cells = _.cloneDeep(this.cells);
+    cells.forEach(cell => {
       cell.setValue(this.ground.nc, undefined);
     });
-    this.cells$.next(this.cells);
+    this.cells$.next(cells);
 
-    this.problems = _.clone(this.problems);
-    _.fill(this.problems, false);
-    this.problems$.next(this.problems);
+    let problems = _.clone(this.problems);
+    _.fill(problems, false);
+    this.problems$.next(problems);
   }
 
   setValue(cursor: number, value?: number) {
     let cell = _.clone(this.cells[cursor]);
     cell.setValue(this.ground.nc, value);
 
-    this.cells = _.clone(this.cells);
-    this.cells[cursor] = cell;
-    this.cells$.next(this.cells);
+    let cells = _.clone(this.cells);
+    cells[cursor] = cell;
+    this.cells$.next(cells);
 
-    this.problems = _.clone(this.problems);
-    this.problems[cursor] = !_.isUndefined(value);
-    this.problems$.next(this.problems);
+    let problems = _.clone(this.problems);
+    problems[cursor] = !_.isUndefined(value);
+    this.problems$.next(problems);
   }
 
   download(fileName: string) {
@@ -77,7 +85,7 @@ export class BoardService {
       zip.loadAsync(reader.result)
         .then(extracted => {
           extracted.file("board.json").async("string").then(json => {
-            let board = new Board(JSON.parse(json));
+            let board = Board.fromJson(JSON.parse(json));
             this.setBoard(board);
           });
         });
@@ -86,13 +94,8 @@ export class BoardService {
   }
 
   private setBoard(board: Board) {
-    this.ground = board.ground;
-    this.ground$.next(this.ground);
-
-    this.cells = board.cells;
-    this.cells$.next(this.cells);
-
-    this.problems = board.problems;
-    this.problems$.next(this.problems);
+    this.ground$.next(board.ground);
+    this.cells$.next(board.cells);
+    this.problems$.next(board.problems);
   }
 }

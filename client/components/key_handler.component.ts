@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 
-import { Ground } from "models/board";
 import { BoardService } from "services/board.service";
 
 @Component({
@@ -8,7 +7,6 @@ import { BoardService } from "services/board.service";
   template: ""
 })
 export class KeyHandlerComponent implements OnInit {
-  @Input() ground: Ground;
   @Input() editMode: boolean;
   @Input() cursor: number;
   @Output() cursorChange = new EventEmitter<number>();
@@ -44,10 +42,11 @@ export class KeyHandlerComponent implements OnInit {
   }
 
   private moveCursor(d: { x: number, y: number }) {
-    let p = this.ground.indexToPos(this.cursor);
-    p.col = (p.col + d.x + this.ground.cols) % this.ground.cols;
-    p.row = (p.row + d.y + this.ground.rows) % this.ground.rows;
-    this.cursor = this.ground.posToIndex(p);
+    let ground = this.boardService.ground;
+    let p = ground.indexToPos(this.cursor);
+    p.col = (p.col + d.x + ground.cols) % ground.cols;
+    p.row = (p.row + d.y + ground.rows) % ground.rows;
+    this.cursor = ground.posToIndex(p);
     this.cursorChange.emit(this.cursor);
   }
 

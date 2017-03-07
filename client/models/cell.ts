@@ -7,16 +7,14 @@ export class Cell {
     return 1 << this.nc;
   }
 
-  index: number;
-  cands?: number;
-  value?: number;
+  constructor(public index: number, public cands?: number, public value?: number) {
+  }
 
-  constructor(json: any) {
-    this.index = json.index;
+  static fromJson(json: any) {
     if (json.cands >= Cell.ncOffset) {
-      this.value = json.cands - Cell.ncOffset;
+      return new Cell(json.index, undefined, json.cands - Cell.ncOffset);
     } else {
-      this.cands = json.cands;
+      return new Cell(json.index, json.cands, undefined);
     }
   }
 

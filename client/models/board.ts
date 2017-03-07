@@ -3,37 +3,47 @@ import * as _ from "lodash";
 import { Cell } from "./cell";
 
 export class Board {
-  ground: Ground;
-  cells: Cell[];
-  problems: boolean[];
+  constructor(
+    public ground: Ground,
+    public cells: Cell[],
+    public problems: boolean[]
+  ) {
+  }
 
-  constructor(json: any) {
-    this.ground = new Ground(json.ground);
-    Cell.nc = this.ground.nc;
-    this.cells = json.cells.map((js: any) => new Cell(js));
+  static fromJson(json: any) {
+    let ground = Ground.fromJson(json.ground);
+
+    Cell.nc = ground.nc;
+    let cells = json.cells.map((js: any) => Cell.fromJson(js));
+
+    let problems: boolean[];
     if (json.problems) {
-      this.problems = json.problems;
+      problems = json.problems;
     } else {
-      this.problems = _.times(this.cells.length, _.constant(false));
+      problems = _.times(cells.length, _.constant(false));
     }
+
+    return new Board(ground, cells, problems);
   }
 }
 
 export class Ground {
-  rows: number;
-  cols: number;
-  nc: number;
   candRows: number;
   candCols: number;
-  houses: House[];
 
-  constructor(json: any) {
-    this.rows = json.rows;
-    this.cols = json.cols;
-    this.nc = json.nc;
+  constructor(
+    public rows: number,
+    public cols: number,
+    public nc: number,
+    public houses: House[]
+  ) {
     this.candRows = Math.floor(Math.sqrt(this.nc));
     this.candCols = Math.ceil(Math.sqrt(this.nc));
-    this.houses = json.houses.map((js: any) => new House(js));
+  }
+
+  static fromJson(json: any) {
+    let houses = json.houses.map((js: any) => House.fromJson(js));
+    return new Ground(json.rows, json.cols, json.nc, houses);
   }
 
   indexToPos(index: number) {
@@ -50,13 +60,14 @@ export class Ground {
 }
 
 export class House {
-  index: number;
-  type: string;
-  cells: number[];
+  constructor(
+    public index: number,
+    public type: string,
+    public cells: number[]
+  ) {
+  }
 
-  constructor(json: any) {
-    this.index = json.index;
-    this.type = json.type;
-    this.cells = json.cells;
+  static fromJson(json: any) {
+    return new House(json.index, json.type, json.cells);
   }
 }
