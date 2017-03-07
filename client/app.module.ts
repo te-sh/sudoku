@@ -5,6 +5,7 @@ import { MaterialModule } from "@angular/material";
 import { FlexLayoutModule } from "@angular/flex-layout";
 
 import { BoardService } from "services/board.service";
+import { ModeService } from "services/mode.service";
 import { GraphService } from "services/graph.service";
 import { SolveService } from "services/solve.service";
 
@@ -34,6 +35,7 @@ import { UploadDialogComponent } from "components/upload_dialog.component";
   ],
   providers: [
     BoardService,
+    ModeService,
     GraphService,
     SolveService
   ],

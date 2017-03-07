@@ -3,15 +3,17 @@ import * as PIXI from "pixi.js";
 
 import { GraphBoard } from "models/graph/board";
 import { BoardService } from "services/board.service";
+import { ModeService } from "services/mode.service";
 
 @Injectable()
 export class GraphService {
-  private renderer: PIXI.WebGLRenderer | PIXI.CanvasRenderer;
+  private renderer: PIXI.WebGLRenderer|PIXI.CanvasRenderer;
   private graphBoard: GraphBoard;
-  private editMode: boolean;
-  private cursor: number;
 
-  constructor(private boardService: BoardService) {
+  constructor(
+    private boardService: BoardService,
+    private modeService: ModeService
+  ) {
     this.renderer = PIXI.autoDetectRenderer(1, 1);
     this.renderer.backgroundColor = 0xffffff;
     this.graphBoard = new GraphBoard();
@@ -33,7 +35,7 @@ export class GraphService {
 
     this.boardService.cells$.subscribe(cells => {
       this.graphBoard.updateCells(cells);
-      this.setEditMode(this.editMode, false);
+      this.graphBoard.setEditMode(this.modeService.edit);
       this.render();
     });
 
@@ -41,23 +43,16 @@ export class GraphService {
       this.graphBoard.updateProblems(problems);
       this.render();
     });
-  }
 
-  setEditMode(editMode: boolean, render = true) {
-    this.editMode = editMode;
-    this.graphBoard.setEditMode(editMode);
-    this.setCursor(this.cursor, false);
-    if (render) {
+    this.modeService.edit$.subscribe(edit => {
+      this.graphBoard.setEditMode(edit);
       this.render();
-    }
-  }
+    });
 
-  setCursor(cursor: number, render = true) {
-    this.cursor = cursor;
-    this.graphBoard.setCursor(this.editMode ? cursor : -1);
-    if (render) {
+    this.modeService.cursor$.subscribe(cursor => {
+      this.graphBoard.setCursor(this.modeService.edit ? cursor : -1);
       this.render();
-    }
+    });
   }
 
   private render() {

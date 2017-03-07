@@ -1,7 +1,9 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { MdDialog } from "@angular/material";
+import { Observable } from "rxjs";
 
 import { BoardService } from "services/board.service";
+import { ModeService } from "services/mode.service";
 import { DownloadDialogComponent } from "./download_dialog.component";
 import { UploadDialogComponent } from "./upload_dialog.component";
 
@@ -9,19 +11,22 @@ import { UploadDialogComponent } from "./upload_dialog.component";
   selector: "sudoku-toolbar",
   templateUrl: "toolbar.component.html"
 })
-export class ToolbarComponent {
-  @Input() editMode: boolean;
-  @Output() editModeChange = new EventEmitter<boolean>();
+export class ToolbarComponent implements OnInit {
+  editMode$: Observable<boolean>;
 
   constructor(
+    private dialog: MdDialog,
     private boardService: BoardService,
-    private dialog: MdDialog
+    private modeService: ModeService
   ) {
   }
 
+  ngOnInit() {
+    this.editMode$ = this.modeService.edit$;
+  }
+
   changeEditMode() {
-    this.editMode = !this.editMode;
-    this.editModeChange.emit(this.editMode);
+    this.modeService.toggleEdit();
   }
 
   clear() {

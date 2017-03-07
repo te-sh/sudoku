@@ -7,6 +7,7 @@ import * as JSZip from "jszip";
 
 import { Board, Ground } from "models/board";
 import { Cell } from "models/cell";
+import { ModeService } from "services/mode.service";
 
 @Injectable()
 export class BoardService {
@@ -14,7 +15,10 @@ export class BoardService {
   cells$ = new BehaviorSubject<Cell[]>([]);
   problems$ = new BehaviorSubject<boolean[]>([]);
 
-  constructor(private http: Http) {
+  constructor(
+    private http: Http,
+    private modeService: ModeService
+  ) {
   }
 
   get ground() {
@@ -50,7 +54,9 @@ export class BoardService {
     this.problems$.next(problems);
   }
 
-  setValue(cursor: number, value?: number) {
+  setValue(value?: number) {
+    let cursor = this.modeService.cursor;
+
     let cell = _.clone(this.cells[cursor]);
     cell.setValue(this.ground.nc, value);
 
@@ -97,5 +103,6 @@ export class BoardService {
     this.ground$.next(board.ground);
     this.cells$.next(board.cells);
     this.problems$.next(board.problems);
+    this.modeService.setCursor(0);
   }
 }

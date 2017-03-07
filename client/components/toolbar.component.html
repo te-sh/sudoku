@@ -2,7 +2,7 @@
   <span>Sudoku</span>
   <div [fxFlexOffset]="3">
     <md-button-toggle-group multiple>
-      <md-button-toggle [checked]="editMode"
+      <md-button-toggle [checked]="editMode$ | async"
                         (change)="changeEditMode()">
         <md-icon>edit</md-icon>
       </md-button-toggle>

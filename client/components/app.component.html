@@ -1,7 +1,5 @@
 <div fxLayout="column" fxLayoutGap="10px">
-  <sudoku-toolbar
-      [(editMode)]="editMode"
-      (editModeChange)="setEditMode($event)">
+  <sudoku-toolbar>
   </sudoku-toolbar>
   <div fxLayout fxLayoutGap="10px">
     <div fxFlex="1 1 auto">
@@ -15,8 +13,5 @@
   </div>
 </div>
 
-<sudoku-key-handler
-    [editMode]="editMode"
-    [(cursor)]="cursor"
-    (cursorChange)="setCursor($event)">
+<sudoku-key-handler>
 </sudoku-key-handler>
