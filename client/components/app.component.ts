@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 
-import { Ground, Cell } from "models/board";
+import { Ground } from "models/board";
+import { Cell } from "models/cell";
 import { BoardService } from "services/board.service";
 import { GraphService } from "services/graph.service";
 

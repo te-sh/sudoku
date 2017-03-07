@@ -1,6 +1,7 @@
 import * as PIXI from "pixi.js";
 
-import { Ground, Cell } from "models/board";
+import { Ground } from "models/board";
+import { Cell } from "models/cell";
 import { GraphBoard } from "models/graph/board";
 
 export class GraphService {

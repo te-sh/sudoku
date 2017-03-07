@@ -1,7 +1,8 @@
 import * as PIXI from "pixi.js";
 import * as _ from "lodash";
 
-import { Ground, Cell } from "models/board";
+import { Ground } from "models/board";
+import { Cell } from "models/cell";
 import { Config } from "models/graph/config";
 import { Size } from "models/graph/size";
 import { LatticePoint } from "models/graph/lattice_point";

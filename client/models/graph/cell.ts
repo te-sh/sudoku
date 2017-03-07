@@ -1,7 +1,8 @@
 import * as PIXI from "pixi.js";
 import * as _ from "lodash";
 
-import { Ground, Cell } from "models/board";
+import { Ground } from "models/board";
+import { Cell } from "models/cell";
 import { Config } from "models/graph/config";
 import { Size } from "models/graph/size";
 import { GraphCand } from "models/graph/cand";
@@ -46,7 +47,7 @@ export class GraphCell {
       this.candsContainer.visible = false;
 
       this.texts.forEach((text, index) => {
-        text.visible = this.cell.value == index;
+        text.visible = this.cell.value === index;
       });
     }
   }

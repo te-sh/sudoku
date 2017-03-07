@@ -5,7 +5,8 @@ import * as _ from "lodash";
 import * as fileSaver from "file-saver";
 import * as JSZip from "jszip";
 
-import { Board, Ground, Cell } from "models/board";
+import { Board, Ground } from "models/board";
+import { Cell } from "models/cell";
 
 @Injectable()
 export class BoardService {
@@ -57,7 +58,7 @@ export class BoardService {
   download(fileName: string) {
     let json = JSON.stringify({
       ground: this.ground,
-      cells: this.cells,
+      cells: this.cells.map(cell => cell.toJson()),
       problems: this.problems
     });
     let zip = new JSZip();
@@ -87,8 +88,10 @@ export class BoardService {
   private setBoard(board: Board) {
     this.ground = board.ground;
     this.ground$.next(this.ground);
+
     this.cells = board.cells;
     this.cells$.next(this.cells);
+
     this.problems = board.problems;
     this.problems$.next(this.problems);
   }
