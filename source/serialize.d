@@ -1,4 +1,5 @@
 import std.algorithm, std.conv, std.range;
+import solve;
 
 class Board
 {
@@ -25,6 +26,14 @@ class Ground
     this.nc = nc;
     this.houses = houses;
   }
+
+  solve.Ground toSolve(solve.Cell[] cells)
+  {
+    return new solve.Ground(this.rows,
+                            this.cols,
+                            this.nc,
+                            this.houses.map!(house => house.toSolve(cells)).array);
+  }
 }
 
 class House
@@ -39,6 +48,13 @@ class House
     this.type = type;
     this.cells = cells;
   }
+
+  solve.House toSolve(solve.Cell[] cells)
+  {
+    return new solve.House(this.index,
+                           this.type,
+                           this.cells.map!(i => cells[i]).array);
+  }
 }
 
 class Cell
@@ -50,6 +66,15 @@ class Cell
   {
     this.index = index;
     this.cands = cands;
+  }
+
+  solve.Cell toSolve(int nc)
+  {
+    if (this.cands < (1 << nc)) {
+      return new CandsCell(this.index, this.cands);
+    } else {
+      return new ValueCell(this.index, this.cands - (1 << nc));
+    }
   }
 }
 

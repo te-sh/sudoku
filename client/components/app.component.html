@@ -1,12 +1,23 @@
-<sudoku-toolbar
-    [(editMode)]="editMode"
-    (editModeChange)="setEditMode($event)">
-</sudoku-toolbar>
-<sudoku-board
-    [ground]="ground$"
-    [cells]="cells$"
-    [problems]="problems$">
-</sudoku-board>
+<div fxLayout="column" fxLayoutGap="10px">
+  <sudoku-toolbar
+      [(editMode)]="editMode"
+      (editModeChange)="setEditMode($event)">
+  </sudoku-toolbar>
+  <div fxLayout fxLayoutGap="10px">
+    <div fxFlex="1 1 auto">
+      <sudoku-board
+          [ground]="ground$"
+          [cells]="cells$"
+          [problems]="problems$">
+      </sudoku-board>
+    </div>
+    <div fxFlexOffset="1">
+      <sudoku-solvers>
+      </sudoku-solvers>
+    </div>
+  </div>
+</div>
+
 <sudoku-key-handler
     [ground]="ground$ | async"
     [editMode]="editMode"

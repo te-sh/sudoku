@@ -1,0 +1,7 @@
+<md-card>
+  <table>
+    <tr *ngFor="let solver of solvers$ | async">
+      <td>{{ solver.name }}</td>
+    </tr>
+  </table>
+</md-card>

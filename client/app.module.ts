@@ -6,10 +6,12 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 
 import { BoardService } from "services/board.service";
 import { GraphService } from "services/graph.service";
+import { SolveService } from "services/solve.service";
 
 import { AppComponent } from "components/app.component";
 import { ToolbarComponent } from "components/toolbar.component";
 import { BoardComponent } from "components/board.component";
+import { SolversComponent } from "components/solvers.component";
 import { KeyHandlerComponent } from "components/key_handler.component";
 import { DownloadDialogComponent } from "components/download_dialog.component";
 import { UploadDialogComponent } from "components/upload_dialog.component";
@@ -25,13 +27,15 @@ import { UploadDialogComponent } from "components/upload_dialog.component";
     AppComponent,
     ToolbarComponent,
     BoardComponent,
+    SolversComponent,
     KeyHandlerComponent,
     DownloadDialogComponent,
     UploadDialogComponent
   ],
   providers: [
     BoardService,
-    GraphService
+    GraphService,
+    SolveService
   ],
   entryComponents: [
     DownloadDialogComponent,
