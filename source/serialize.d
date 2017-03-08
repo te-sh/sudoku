@@ -1,25 +1,35 @@
 import std.algorithm, std.conv, std.range;
 import solve;
 
-class Board
+class jBoard
 {
-  Ground ground;
-  Cell[] cells;
+  jGround ground;
+  jCell[] cells;
 
-  this(Ground ground, Cell[] cells)
+  this() { }
+
+  this(jGround ground, jCell[] cells)
   {
     this.ground = ground;
     this.cells = cells;
   }
+
+  Board toSolve()
+  {
+    auto cells = this.cells.map!(cell => cell.toSolve(this.ground.nc)).array;
+    auto ground = this.ground.toSolve(cells);
+    return new Board(ground, cells);
+  }
 }
 
-class Ground
+class jGround
 {
-  int rows, cols;
-  int nc;
-  House[] houses;
+  int rows, cols, nc;
+  jHouse[] houses;
 
-  this(int rows, int cols, int nc, House[] houses)
+  this() { }
+
+  this(int rows, int cols, int nc, jHouse[] houses)
   {
     this.rows = rows;
     this.cols = cols;
@@ -27,20 +37,25 @@ class Ground
     this.houses = houses;
   }
 
-  solve.Ground toSolve(solve.Cell[] cells)
+  Ground toSolve(Cell[] cells)
   {
-    return new solve.Ground(this.rows,
-                            this.cols,
-                            this.nc,
-                            this.houses.map!(house => house.toSolve(cells)).array);
+    auto houses = this.houses.map!(house => house.toSolve(cells)).array;
+    return new Ground(this.rows, this.cols, this.nc, houses);
   }
 }
 
-class House
+class jResult
+{
+  Cell[] removeCands;
+}
+
+class jHouse
 {
   int index;
   string type;
   int[] cells;
+
+  this() { }
 
   this(int index, string type, int[] cells)
   {
@@ -49,18 +64,19 @@ class House
     this.cells = cells;
   }
 
-  solve.House toSolve(solve.Cell[] cells)
+  House toSolve(Cell[] bCells)
   {
-    return new solve.House(this.index,
-                           this.type,
-                           this.cells.map!(i => cells[i]).array);
+    auto hCells = this.cells.map!(i => bCells[i]).array;
+    return new House(this.index, this.type, hCells);
   }
 }
 
-class Cell
+class jCell
 {
   int index;
   int cands;
+
+  this() { }
 
   this(int index, int cands)
   {
@@ -68,7 +84,7 @@ class Cell
     this.cands = cands;
   }
 
-  solve.Cell toSolve(int nc)
+  Cell toSolve(int nc)
   {
     if (this.cands < (1 << nc)) {
       return new CandsCell(this.index, this.cands);
@@ -78,21 +94,21 @@ class Cell
   }
 }
 
-Board simpleBoard()
+jBoard simpleBoard()
 {
   auto rows = 9, cols = 9, nc = 9;
   auto cands = (1 << nc) - 1;
 
-  House[] houses;
+  jHouse[] houses;
   foreach (r; rows.iota) {
-    auto house = new House(houses.length.to!int, "row", []);
+    auto house = new jHouse(houses.length.to!int, "row", []);
     foreach (c; cols.iota)
       house.cells ~= r * cols + c;
     houses ~= house;
   }
 
   foreach (c; cols.iota) {
-    auto house = new House(houses.length.to!int, "col", []);
+    auto house = new jHouse(houses.length.to!int, "col", []);
     foreach (r; rows.iota)
       house.cells ~= r * cols + c;
     houses ~= house;
@@ -101,16 +117,16 @@ Board simpleBoard()
   auto hrows = 3, hcols = 3;
   foreach (br; hrows.iota)
     foreach (bc; hcols.iota) {
-      auto house = new House(houses.length.to!int, "box", []);
+      auto house = new jHouse(houses.length.to!int, "box", []);
       foreach (r; hrows.iota)
         foreach (c; hcols.iota)
           house.cells ~= (br * hrows + r) * cols + (bc * hcols + c);
       houses ~= house;
     }
 
-  auto ground = new Ground(rows, cols, nc, houses);
+  auto ground = new jGround(rows, cols, nc, houses);
 
-  auto cells = (rows * cols).iota.map!(i => new Cell(i, cands)).array;
+  auto cells = (rows * cols).iota.map!(i => new jCell(i, cands)).array;
 
-  return new Board(ground, cells);
+  return new jBoard(ground, cells);
 }

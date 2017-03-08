@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 
 import { BoardService } from "services/board.service";
 import { ModeService } from "services/mode.service";
+import { SolveService } from "services/solve.service";
 import { DownloadDialogComponent } from "./download_dialog.component";
 import { UploadDialogComponent } from "./upload_dialog.component";
 
@@ -17,7 +18,8 @@ export class ToolbarComponent implements OnInit {
   constructor(
     private dialog: MdDialog,
     private boardService: BoardService,
-    private modeService: ModeService
+    private modeService: ModeService,
+    private solveService: SolveService
   ) {
   }
 
@@ -27,6 +29,10 @@ export class ToolbarComponent implements OnInit {
 
   changeEditMode() {
     this.modeService.toggleEdit();
+  }
+
+  solve() {
+    this.solveService.solve();
   }
 
   clear() {

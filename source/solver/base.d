@@ -1,3 +1,5 @@
+import solve;
+
 abstract class Base
 {
   string id;
@@ -8,4 +10,6 @@ abstract class Base
     this.id = id;
     this.name = name;
   }
+
+  abstract Result solve(Board board);
 }

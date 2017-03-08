@@ -1,7 +1,7 @@
-import vibe.vibe;
-import solvers;
+import vibe.vibe, vibe.data.json;
+import serialize, solvers;
 
-import serialize;
+import std.stdio;
 
 void getBoard(HTTPServerRequest req, HTTPServerResponse res)
 {
@@ -13,11 +13,24 @@ void getSolvers(HTTPServerRequest req, HTTPServerResponse res)
   res.writeJsonBody(solversList);
 }
 
+void solve(HTTPServerRequest req, HTTPServerResponse res)
+{
+  auto solver = getSolver(req.params["method"]);
+  auto board = req.json.deserializeJson!jBoard.toSolve;
+  auto result = solver.solve(board);
+
+  if (result)
+    res.writeJsonBody(result);
+  else
+    res.writeBody("{}");
+}
+
 void main()
 {
   auto router = new URLRouter;
   router.get("/board", &getBoard);
   router.get("/solvers", &getSolvers);
+  router.post("/solve/:method", &solve);
   router.get("/", serveStaticFiles("./public/index.html"));
   router.get("*", serveStaticFiles("./public/"));
 

@@ -3,6 +3,7 @@ import { Http } from "@angular/http";
 import { BehaviorSubject } from "rxjs";
 
 import { Solver } from "models/solver";
+import { BoardService } from "services/board.service";
 
 @Injectable()
 export class SolveService {
@@ -10,7 +11,10 @@ export class SolveService {
 
   private solvers: Solver[];
 
-  constructor(private http: Http) {
+  constructor(
+    private http: Http,
+    private boardService: BoardService
+  ) {
   }
 
   init() {
@@ -20,5 +24,16 @@ export class SolveService {
         this.solvers = r.map((s: any) => Solver.fromJson(s));
         this.solvers$.next(this.solvers);
       });
+  }
+
+  solve() {
+    let params = {
+      ground: this.boardService.ground,
+      cells: this.boardService.cells.map(cell => cell.toJson())
+    };
+
+    this.http.post("/solve/explicit", params)
+      .map(r => r.json())
+      .subscribe(r => console.log(r));
   }
 }
