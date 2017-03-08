@@ -53,7 +53,7 @@ let config = {
         loader: 'url-loader?mimetype=image/svg+xml'
       },
       {
-        test: /\.(woff(\d+)?|eot|ttf)$/,
+        test: /\.(woff(\d+)?|eot|ttf)(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url-loader?mimetype=application/font-woff'
       },
       {

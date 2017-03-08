@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
-import { MaterialModule } from "@angular/material";
+import { MaterialModule, MdIconRegistry } from "@angular/material";
 import { FlexLayoutModule } from "@angular/flex-layout";
 
 import { BoardService } from "services/board.service";
@@ -48,4 +48,7 @@ import { UploadDialogComponent } from "components/upload_dialog.component";
   ]
 })
 export class AppModule {
+  constructor(mdIconRegistry: MdIconRegistry) {
+    mdIconRegistry.registerFontClassAlias("fontawesome", "fa");
+  }
 }

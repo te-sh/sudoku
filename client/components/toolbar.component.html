@@ -1,12 +1,20 @@
 <md-toolbar>
   <span>Sudoku</span>
-  <div [fxFlexOffset]="3">
+  <div fxFlexOffset="3">
     <md-button-toggle-group multiple>
       <md-button-toggle [checked]="editMode$ | async"
                         (change)="changeEditMode()">
         <md-icon>edit</md-icon>
       </md-button-toggle>
     </md-button-toggle-group>
+  </div>
+  <div fxFlexOffset="3">
+    <button md-icon-button>
+      <md-icon fontSet="fa" fontIcon="fa-stop" class="fa-mat"></md-icon>
+    </button>
+    <button md-icon-button>
+      <md-icon fontSet="fa" fontIcon="fa-play" class="fa-mat"></md-icon>
+    </button>
   </div>
   <div fxFlex>
   </div>
