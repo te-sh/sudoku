@@ -1,5 +1,5 @@
 import std.algorithm, std.conv, std.range;
-import solve;
+import model;
 
 class jBoard
 {

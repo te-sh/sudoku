@@ -1,5 +1,5 @@
 import std.algorithm, std.range;
-import base, solve;
+import model, base, helpers;
 
 class Explicit : Base
 {
@@ -8,20 +8,32 @@ class Explicit : Base
     super("explicit", "Explicit");
   }
 
-  override Result solve(Board board) {
-    auto removeCandsCells = board.cells.map!"a.newCandsCell".array;
+  override Result solve(Board board)
+  {
+    auto removeCcs = board.cells.map!"a.newCandsCell".array;
 
     foreach (house; board.houses) {
       auto values = house.cells.valueCells.map!"a.value".toCands;
       foreach (cell; house.cells.candsCells)
-        removeCandsCells[cell.index].cands |= values;
+        removeCcs[cell.index].cands |= values;
     }
 
-    removeCandsCells = removeCandsCells.filter!"a.cands".array;
+    foreach (removeCc; removeCcs) {
+      auto cell = cast(CandsCell)(board.cells[removeCc.index]);
+      if (cell !is null)
+        removeCc.cands &= cell.cands;
+    }
 
-    if (!removeCandsCells.empty) {
+    removeCcs = removeCcs.filter!"a.cands".array;
+
+    return createResult(removeCcs);
+  }
+
+  auto createResult(CandsCell[] removeCcs)
+  {
+    if (!removeCcs.empty) {
       auto result = new Result();
-      result.removeCandsCells = removeCandsCells;
+      result.removeCcs = removeCcs;
       return result;
     } else {
       return null;

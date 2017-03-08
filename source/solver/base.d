@@ -1,4 +1,4 @@
-import solve;
+import model;
 
 abstract class Base
 {

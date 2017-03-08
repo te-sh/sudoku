@@ -1,5 +1,5 @@
 import vibe.vibe, vibe.data.json;
-import serialize, solvers;
+import jmodel, solvers;
 
 import std.stdio;
 
@@ -22,7 +22,7 @@ void solve(HTTPServerRequest req, HTTPServerResponse res)
   if (result)
     res.writeJsonBody(result);
   else
-    res.writeBody("{}");
+    res.writeJsonBody(Json.emptyObject);
 }
 
 void main()
