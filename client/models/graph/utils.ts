@@ -9,10 +9,12 @@ export class Utils {
     let width = config.width;
     let offset = config.offset;
 
-    g.lineStyle(width, color, config.alpha);
-    let xy = width / 2 + offset;
-    let wh = size - offset * 2 - width + 1;
-    g.drawRect(xy, xy, wh, wh);
+    if (width) {
+      g.lineStyle(width, color, config.alpha);
+      let xy = width / 2 + offset;
+      let wh = size - offset * 2 - width + 1;
+      g.drawRect(xy, xy, wh, wh);
+    }
 
     return g;
   }
@@ -24,8 +26,8 @@ export class Utils {
       fill: color
     });
 
-    t.x = (size - t.width) / 2;
-    t.y = (size - t.height) / 2;
+    t.x = Math.ceil((size - t.width) / 2);
+    t.y = Math.ceil((size - t.height) / 2);
 
     return t;
   }
