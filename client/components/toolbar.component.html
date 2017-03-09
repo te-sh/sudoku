@@ -23,13 +23,19 @@
   <div fxFlex>
   </div>
   <div>
-    <button md-icon-button (click)="clear()">
+    <button md-icon-button
+            [disabled]="edit$ | async"
+            (click)="clear()">
       <md-icon>clear</md-icon>
     </button>
-    <button md-icon-button (click)="download()">
+    <button md-icon-button
+            [disabled]="edit$ | async"
+            (click)="download()">
       <md-icon>file_download</md-icon>
     </button>
-    <button md-icon-button (click)="upload()">
+    <button md-icon-button
+            [disabled]="edit$ | async"
+            (click)="upload()">
       <md-icon>file_upload</md-icon>
     </button>
   </div>

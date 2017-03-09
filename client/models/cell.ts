@@ -29,9 +29,9 @@ export class Cell {
     return !!this.cands && (this.cands & (1 << cand)) !== 0;
   }
 
-  setValue(nc: number, value?: number) {
+  setValue(value?: number) {
     if (_.isUndefined(value)) {
-      this.cands = (1 << nc) - 1;
+      this.cands = Cell.ncOffset - 1;
       delete this.value;
     } else {
       delete this.cands;

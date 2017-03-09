@@ -2,7 +2,8 @@ import std.algorithm;
 import solver;
 
 auto solversList = [new Explicit(),
-                    new NakedSingle()];
+                    new NakedSingle(),
+                    new HiddenSingle()];
 
 auto getSolver(string method)
 {

@@ -39,9 +39,7 @@ export class SolveHelperService {
       if (result.decideVcs) {
         result.decideVcs.forEach(vc => {
           let cell = rcells[vc.index];
-          if (vc.value) {
-            cell.setValue(vc.value);
-          }
+          cell.setValue(vc.value);
         });
       }
     }

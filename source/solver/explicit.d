@@ -13,8 +13,8 @@ class Explicit : Base
     auto removeCcs = board.cells.map!"a.newCandsCell".array;
 
     foreach (house; board.houses) {
-      auto values = house.cells.valueCells.map!"a.value".toCands;
-      foreach (cell; house.cells.candsCells)
+      auto values = house.valueCells.map!"a.value".toCands;
+      foreach (cell; house.candsCells)
         removeCcs[cell.index].cands |= values;
     }
 

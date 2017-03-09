@@ -57,7 +57,7 @@ export class BoardService {
   clear() {
     let cells = _.cloneDeep(this.cells);
     cells.forEach(cell => {
-      cell.setValue(this.ground.nc, undefined);
+      cell.setValue(undefined);
     });
     this.cells$.next(cells);
 
@@ -70,7 +70,7 @@ export class BoardService {
     let cursor = this.modeService.cursor;
 
     let cell = _.clone(this.cells[cursor]);
-    cell.setValue(this.ground.nc, value);
+    cell.setValue(value);
 
     let cells = _.clone(this.cells);
     cells[cursor] = cell;
