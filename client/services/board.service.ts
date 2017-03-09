@@ -35,6 +35,10 @@ export class BoardService {
     return this.problems$.getValue();
   }
 
+  get result() {
+    return this.result$.getValue();
+  }
+
   updateCells(cells: Cell[]) {
     this.cells$.next(cells);
   }
@@ -46,10 +50,8 @@ export class BoardService {
   init() {
     this.http.get("/board")
       .map(r => r.json())
-      .subscribe(r => {
-        let board = Board.fromJson(r);
-        this.setBoard(board);
-      });
+      .map(r => Board.fromJson(r))
+      .subscribe(board => this.setBoard(board));
   }
 
   clear() {

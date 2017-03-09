@@ -24,7 +24,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.editMode$ = this.modeService.edit$;
+    this.editMode$ = this.modeService.edit$.distinctUntilChanged();
   }
 
   changeEditMode() {
@@ -32,7 +32,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   solve() {
-    this.solveService.start();
+    this.solveService.run();
   }
 
   clear() {

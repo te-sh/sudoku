@@ -16,7 +16,7 @@ export class SolversComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.solvers$ = this.solversService.solvers$;
+    this.solvers$ = this.solversService.solvers$.distinctUntilChanged();
     this.solversService.init();
   }
 
