@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Http } from "@angular/http";
 import { BehaviorSubject } from "rxjs";
 
-import { Solver } from "models/solver";
+import { Solver, Status } from "models/solver";
 
 @Injectable()
 export class SolversService {
@@ -16,6 +16,22 @@ export class SolversService {
   }
 
   updateSolvers(solvers: Solver[]) {
+    this.solvers$.next(solvers);
+  }
+
+  clearSolvers() {
+    let solvers = this.solvers.map(solver => solver.setStatus("none"));
+    this.solvers$.next(solvers);
+  }
+
+  setSolvers(status: Status) {
+    let solvers = this.solvers.map(solver => {
+      if (solver.status === "accessing") {
+        return solver.setStatus(status);
+      } else {
+        return solver;
+      }
+    });
     this.solvers$.next(solvers);
   }
 

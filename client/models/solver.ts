@@ -1,4 +1,4 @@
-type Status = "none"|"accessing"|"hit"|"mishit"|"abort";
+export type Status = "none"|"accessing"|"hit"|"mishit"|"abort"|"error";
 
 export class Solver {
   count: number;

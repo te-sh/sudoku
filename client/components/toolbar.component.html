@@ -10,12 +10,13 @@
   </div>
   <div fxFlexOffset="3">
     <button md-icon-button
-            [disabled]="(edit$ | async) || !(solving$ | async)">
+            [disabled]="(edit$ | async) || !(solving$ | async)"
+            (click)="stop()">
       <md-icon fontSet="fa" fontIcon="fa-stop" class="fa-mat"></md-icon>
     </button>
     <button md-icon-button
             [disabled]="(edit$ | async) || (solving$ | async)"
-            (click)="solve()">
+            (click)="stepForward()">
       <md-icon fontSet="fa" fontIcon="fa-step-forward" class="fa-mat"></md-icon>
     </button>
   </div>

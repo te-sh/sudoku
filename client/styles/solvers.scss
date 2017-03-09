@@ -8,5 +8,15 @@ table {
 
   td {
     padding: 4px 5px 2px;
+
+    &.status {
+      width: 2em;
+      text-align: center;
+    }
+
+    &.count {
+      width: 2em;
+      text-align: right;
+    }
   }
 }

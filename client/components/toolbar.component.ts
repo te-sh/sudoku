@@ -33,8 +33,12 @@ export class ToolbarComponent implements OnInit {
     this.modeService.toggleEdit();
   }
 
-  solve() {
+  stepForward() {
     this.solveService.run();
+  }
+
+  stop() {
+    this.solveService.stop();
   }
 
   clear() {

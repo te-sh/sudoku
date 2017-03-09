@@ -22,9 +22,10 @@ export class SolveService {
   }
 
   run() {
-    let store$ = new BehaviorSubject<Store>(this.initialStore);
     this.modeService.toggleSolving();
+    this.solversService.clearSolvers();
 
+    let store$ = new BehaviorSubject<Store>(this.initialStore);
     this.subscription = store$
       .map(store => _.clone(store))
       .switchMap(store => {
@@ -48,11 +49,20 @@ export class SolveService {
             store$.next(store);
           }
         },
-        undefined,
+        _e => {
+          this.solversService.setSolvers("error");
+          this.modeService.toggleSolving();
+        },
         () => {
           this.modeService.toggleSolving();
         }
       );
+  }
+
+  stop() {
+    this.subscription.unsubscribe();
+    this.solversService.setSolvers("abort");
+    this.modeService.toggleSolving();
   }
 
   private get initialStore(): Store {
@@ -77,7 +87,6 @@ export class SolveService {
 
     return this.solveHelperService
       .solve(this.boardService.ground, store.cells, solver)
-      .catch(_e => Observable.throw(store))
       .map(result => {
         if (result) {
           let solvers = this.newSolvers(store, solver.setStatus("hit").countup());

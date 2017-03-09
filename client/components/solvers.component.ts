@@ -26,6 +26,8 @@ export class SolversComponent implements OnInit {
     case "accessing": return "fa-spinner fa-spin";
     case "hit":       return "fa-check";
     case "mishit":    return "fa-minus";
+    case "abort":     return "fa-times";
+    case "error":     return "fa-bomb";
     }
   }
 }
