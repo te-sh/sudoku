@@ -1,3 +1,5 @@
+import std.algorithm, std.bitmanip, std.conv, std.format, std.range;
+
 class Board
 {
   Ground ground;
@@ -30,7 +32,7 @@ class Ground
 class Result
 {
   CandsCell[] removeCcs;
-  ValueCell[] decideCcs;
+  ValueCell[] decideVcs;
 }
 
 class House
@@ -65,16 +67,24 @@ abstract class Cell
   {
     return new ValueCell(index, value);
   }
+
+  abstract string dump();
 }
 
 class CandsCell: Cell
 {
   int cands;
 
-  this(int index, int value)
+  this(int index, int cands)
   {
     super(index);
     this.cands = cands;
+  }
+
+  override string dump()
+  {
+    auto values = cands.bitsSet.map!"a + 1";
+    return format("{index:%d,cands:%s}", index, values.map!(to!string).join);
   }
 }
 
@@ -86,5 +96,10 @@ class ValueCell : Cell
   {
     super(index);
     this.value = value;
+  }
+
+  override string dump()
+  {
+    return format("{index:%d,value:%d}", index, value + 1);
   }
 }

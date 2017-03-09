@@ -10,18 +10,18 @@ class NakedSingle : Base
 
   override Result solve(Board board)
   {
-    auto decideCcs = board.cells.candsCells
+    auto decideVcs = board.cells.candsCells
       .filter!(cell => cell.cands.candsSize == 1)
       .map!(cell => cell.newValueCell(cell.cands.candsFront))
       .array;
-    return createResult(decideCcs);
+    return createResult(decideVcs);
   }
 
-  auto createResult(ValueCell[] decideCcs)
+  auto createResult(ValueCell[] decideVcs)
   {
-    if (!decideCcs.empty) {
+    if (!decideVcs.empty) {
       auto result = new Result();
-      result.decideCcs = decideCcs;
+      result.decideVcs = decideVcs;
       return result;
     } else {
       return null;
