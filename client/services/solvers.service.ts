@@ -23,7 +23,7 @@ export class SolversService {
     this.http.get("/solvers")
       .map(r => r.json())
       .subscribe(r => {
-        this.solvers$.next(r);
+        this.solvers$.next(r.map((s: any) => Solver.fromJson(s)));
       });
   }
 }

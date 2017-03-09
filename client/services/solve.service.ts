@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject, Subscription } from "rxjs";
 import * as _ from "lodash";
 
 import { Result } from "models/result";
+import { Solver } from "models/solver";
 import { Store } from "models/store";
 import { BoardService } from "services/board.service";
 import { SolversService } from "services/solvers.service";
@@ -54,21 +55,23 @@ export class SolveService {
     };
 
     return this.http.post(`/solve/${solver.id}`, params)
-      .map(r => r.json())
+      .map(r => Result.fromJson(r.json()))
       .map(result => {
-        if (result) {
-          let nsolver = _.assign({}, solver, { status: "hit" });
-          let solvers = _.assign([], store.solvers, { [store.solverIndex]: nsolver });
-          return _.merge(store, { state: "hit", result: Result.fromJson(result), solvers });
-        } else {
-          let nsolver = _.assign({}, solver, { status: "mishit" });
-          let solvers = _.assign([], store.solvers, { [store.solverIndex]: nsolver });
+        if (_.isEmpty(result)) {
+          let solvers = this.newSolvers(store, solver.setStatus("mishit"));
           return _.merge(store, { state: "mishit", solvers });
+        } else {
+          let solvers = this.newSolvers(store, solver.setStatus("hit"));
+          return _.merge(store, { state: "hit", result, solvers });
         }
       });
   }
 
   private complete(store: Store): Observable<Store> {
     return Observable.of(_.merge(store, { state: "complete" }));
+  }
+
+  private newSolvers(store: Store, solver: Solver) {
+    return _.assign({}, store.solvers, { [store.solverIndex]: solver });
   }
 }

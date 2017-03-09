@@ -22,7 +22,9 @@ export class SolversComponent implements OnInit {
 
   statusIcon(solver: Solver) {
     switch (solver.status) {
-    case "none": return "fa-fw";
+    case "none":   return "fa-fw";
+    case "hit":    return "fa-check";
+    case "mishit": return "fa-minus";
     }
   }
 }
