@@ -1,5 +1,5 @@
 import vibe.vibe;
-import jmodel, solvers;
+import jmodel, board, solvers;
 
 import std.stdio;
 
@@ -20,7 +20,7 @@ void solve(HTTPServerRequest req, HTTPServerResponse res)
   auto result = solver.solve(board);
 
   if (result)
-    res.writeJsonBody(jResult.fromModel(result));
+    res.writeJsonBody(jResult.fromModel(result).toJson);
   else
     res.writeJsonBody(Json.emptyObject);
 }

@@ -1,7 +1,11 @@
 <md-card>
   <table>
     <tr *ngFor="let solver of solvers$ | async">
-      <td>{{ solver.name }}</td>
+      <td class="name">{{ solver.name }}</td>
+      <td class="status">
+        <i class="fa" [ngClass]="statusIcon(solver)"></i>
+      </td>
+      <td class="count">{{ solver.count }}</td>
     </tr>
   </table>
 </md-card>

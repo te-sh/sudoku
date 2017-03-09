@@ -6,7 +6,8 @@ import { SolveService } from "services/solve.service";
 
 @Component({
   selector: "sudoku-solvers",
-  templateUrl: "solvers.component.html"
+  templateUrl: "solvers.component.html",
+  styles: [require("styles/solvers.scss")]
 })
 export class SolversComponent implements OnInit {
   solvers$: Observable<Solver[]>;
@@ -17,5 +18,11 @@ export class SolversComponent implements OnInit {
   ngOnInit() {
     this.solvers$ = this.solveService.solvers$;
     this.solveService.init();
+  }
+
+  statusIcon(solver: Solver) {
+    switch (solver.status) {
+    case "none": return "fa-fw";
+    }
   }
 }
