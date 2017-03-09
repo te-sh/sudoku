@@ -3,6 +3,7 @@ import * as _ from "lodash";
 
 import { Ground } from "models/board";
 import { Cell } from "models/cell";
+import { Result } from "models/result";
 import { Config } from "models/graph/config";
 import { Size } from "models/graph/size";
 import { LatticePoint } from "models/graph/lattice_point";
@@ -50,6 +51,25 @@ export class GraphBoard {
   updateProblems(problems: boolean[]) {
     if (this.graphCells) {
       this.graphCells.forEach((graphCell, index) => graphCell.updateProblem(problems[index]));
+    }
+  }
+
+  updateResult(result?: Result) {
+    if (this.graphCells) {
+      if (result) {
+        if (result.removeCcs) {
+          result.removeCcs.forEach(cc => {
+            this.graphCells[cc.index].updateCandResult("remove", cc);
+          });
+        }
+        if (result.decideVcs) {
+          result.decideVcs.forEach(vc => {
+            this.graphCells[vc.index].updateCandResult("decide", vc);
+          });
+        }
+      } else {
+        this.graphCells.forEach(graphCell => graphCell.removeResult());
+      }
     }
   }
 

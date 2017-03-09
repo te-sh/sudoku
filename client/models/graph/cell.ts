@@ -39,7 +39,7 @@ export class GraphCell {
         text.visible = false;
       });
       this.graphCands.forEach((graphCand, index) => {
-        graphCand.setVisible(this.cell.has(index));
+        graphCand.setTextVisible(this.cell.has(index));
       });
     }
 
@@ -56,6 +56,18 @@ export class GraphCell {
     let color = this.config.cell.text.colors![problem ? 0 : 1];
     this.texts.forEach(text => {
       text.style.fill = color;
+    });
+  }
+
+  updateCandResult(mark: string, cell: Cell) {
+    this.graphCands.forEach((graphCand, index) => {
+      graphCand.setMarkVisible(mark, cell.has(index) || cell.value === index);
+    });
+  }
+
+  removeResult() {
+    this.graphCands.forEach(graphCand => {
+      graphCand.setMarkVisible("remove", false);
     });
   }
 

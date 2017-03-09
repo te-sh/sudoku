@@ -61,6 +61,7 @@ export class ConfigHouse {
 class ConfigColor {
   color?: number;
   colors?: number[];
+  alpha: number;
 
   constructor(json: any) {
     if (json.color) {
@@ -69,6 +70,7 @@ class ConfigColor {
     if (json.colors) {
       this.colors = json.colors.map((color: string) => parseInt(color, 16));
     }
+    this.alpha = json.alpha;
   }
 }
 

@@ -7,6 +7,7 @@ import * as JSZip from "jszip";
 
 import { Board, Ground } from "models/board";
 import { Cell } from "models/cell";
+import { Result } from "models/result";
 import { ModeService } from "services/mode.service";
 
 @Injectable()
@@ -14,6 +15,7 @@ export class BoardService {
   ground$ = new BehaviorSubject<Ground>(new Ground(0, 0, 0, []));
   cells$ = new BehaviorSubject<Cell[]>([]);
   problems$ = new BehaviorSubject<boolean[]>([]);
+  result$ = new BehaviorSubject<Result|undefined>(undefined);
 
   constructor(
     private http: Http,
@@ -31,6 +33,14 @@ export class BoardService {
 
   get problems() {
     return this.problems$.getValue();
+  }
+
+  updateCells(cells: Cell[]) {
+    this.cells$.next(cells);
+  }
+
+  updateResult(result?: Result) {
+    this.result$.next(result);
   }
 
   init() {

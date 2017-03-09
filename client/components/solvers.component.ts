@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 
 import { Solver } from "models/solver";
-import { SolveService } from "services/solve.service";
+import { SolversService } from "services/solvers.service";
 
 @Component({
   selector: "sudoku-solvers",
@@ -12,12 +12,12 @@ import { SolveService } from "services/solve.service";
 export class SolversComponent implements OnInit {
   solvers$: Observable<Solver[]>;
 
-  constructor(private solveService: SolveService) {
+  constructor(private solversService: SolversService) {
   }
 
   ngOnInit() {
-    this.solvers$ = this.solveService.solvers$;
-    this.solveService.init();
+    this.solvers$ = this.solversService.solvers$;
+    this.solversService.init();
   }
 
   statusIcon(solver: Solver) {

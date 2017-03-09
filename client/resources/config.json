@@ -4,7 +4,8 @@
     "text": {
       "size": 36,
       "font": "Tinos",
-      "colors": ["000000", "0000ff"]
+      "colors": ["000000", "0000ff"],
+      "alpha": 1
     },
     "frame": {
       "offset": 0,
@@ -30,7 +31,8 @@
     "text": {
       "size": 13,
       "font": "Play",
-      "color": "404040"
+      "color": "404040",
+      "alpha": 1
     },
     "frame": {
       "offset": 0,
@@ -46,7 +48,8 @@
     },
     "markCirc": {
       "size": 6,
-      "colors": ["c0ff80", "ffc080"]
+      "colors": ["c0ff80", "ffc080"],
+      "alpha": 1
     }
   },
   "house": {

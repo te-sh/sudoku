@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import * as _ from "lodash";
 
-import { ConfigRect, ConfigText } from "models/graph/config";
+import { ConfigRect, ConfigText, ConfigCirc } from "models/graph/config";
 
 export class Utils {
   static buildRect(config: ConfigRect, color: number, size: number) {
@@ -9,7 +9,7 @@ export class Utils {
     let width = config.width;
     let offset = config.offset;
 
-    g.lineStyle(width, color);
+    g.lineStyle(width, color, config.alpha);
     let xy = width / 2 + offset;
     let wh = size - offset * 2 - width + 1;
     g.drawRect(xy, xy, wh, wh);
@@ -30,11 +30,23 @@ export class Utils {
     return t;
   }
 
+  static buildCirc(config: ConfigCirc, color: number, size: number) {
+    let g = new PIXI.Graphics();
+
+    g.lineStyle(1, color, config.alpha);
+    g.beginFill(color, config.alpha);
+    g.drawCircle(size / 2, size / 2, config.size);
+    g.endFill();
+    g.visible = false;
+
+    return g;
+  }
+
   static buildPoly(points: number[][], config: ConfigRect, color: number) {
     let g = new PIXI.Graphics();
     let width = config.width;
 
-    g.lineStyle(width, color);
+    g.lineStyle(width, color, config.alpha);
     g.drawPolygon(_.flatten(points).map(p => p + width / 2));
 
     return g;

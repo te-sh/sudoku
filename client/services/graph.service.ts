@@ -44,6 +44,11 @@ export class GraphService {
       this.render();
     });
 
+    this.boardService.result$.subscribe(result => {
+      this.graphBoard.updateResult(result);
+      this.render();
+    });
+
     this.modeService.edit$.subscribe(edit => {
       this.graphBoard.setEditMode(edit);
       this.render();

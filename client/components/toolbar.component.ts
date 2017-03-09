@@ -32,7 +32,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   solve() {
-    this.solveService.solve();
+    this.solveService.start();
   }
 
   clear() {

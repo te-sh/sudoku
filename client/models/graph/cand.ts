@@ -1,4 +1,5 @@
 import * as PIXI from "pixi.js";
+import * as _ from "lodash";
 
 import { Ground } from "models/board";
 import { Config } from "models/graph/config";
@@ -10,6 +11,7 @@ export class GraphCand {
 
   private frame: PIXI.Graphics;
   private text: PIXI.Text;
+  private marks: {[key: string]: PIXI.Graphics};
 
   constructor(
     private config: Config,
@@ -19,11 +21,16 @@ export class GraphCand {
   ) {
     this.setContainer(ground, size);
     this.setFrameGraphics(size);
+    this.setMarksGraphics(size);
     this.setTextGraphics(size);
   }
 
-  setVisible(visible: boolean) {
+  setTextVisible(visible: boolean) {
     this.text.visible = visible;
+  }
+
+  setMarkVisible(mark: string, visible: boolean) {
+    this.marks[mark].visible = visible;
   }
 
   private setContainer(ground: Ground, size: Size) {
@@ -37,21 +44,26 @@ export class GraphCand {
   }
 
   private setFrameGraphics(size: Size) {
-    this.frame = Utils.buildRect(
-      this.config.cand.frame,
-      this.config.cand.frame.color!,
-      size.cand
-    );
+    let config = this.config.cand;
+    this.frame = Utils.buildRect(config.frame, config.frame.color!, size.cand);
     this.container.addChild(this.frame);
   }
 
+  private setMarksGraphics(size: Size) {
+    let config = this.config.cand;
+    let csize = size.cand + config.frame.width;
+    this.marks = {
+      remove: Utils.buildCirc(config.markCirc, config.markCirc.colors![0], csize),
+      decide: Utils.buildCirc(config.markCirc, config.markCirc.colors![1], csize)
+    };
+    _.forEach(this.marks, g => this.container.addChild(g));
+  }
+
   private setTextGraphics(size: Size) {
-    this.text = Utils.buildText(
-      (this.cand + 1).toString(),
-      this.config.cand.text,
-      this.config.cand.text.color!,
-      size.cand + this.config.cand.frame.width
-    );
+    let str = (this.cand + 1).toString();
+    let config = this.config.cand;
+    let csize = size.cand + config.frame.width;
+    this.text = Utils.buildText(str, config.text, config.text.color!, csize);
     this.container.addChild(this.text);
   }
 }
