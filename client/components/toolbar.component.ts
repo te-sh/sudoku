@@ -13,7 +13,8 @@ import { UploadDialogComponent } from "./upload_dialog.component";
   templateUrl: "toolbar.component.html"
 })
 export class ToolbarComponent implements OnInit {
-  editMode$: Observable<boolean>;
+  edit$: Observable<boolean>;
+  solving$: Observable<boolean>;
 
   constructor(
     private dialog: MdDialog,
@@ -24,7 +25,8 @@ export class ToolbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.editMode$ = this.modeService.edit$.distinctUntilChanged();
+    this.edit$ = this.modeService.edit$.distinctUntilChanged();
+    this.solving$ = this.modeService.solving$.distinctUntilChanged();
   }
 
   changeEditMode() {

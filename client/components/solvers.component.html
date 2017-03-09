@@ -3,7 +3,7 @@
     <tr *ngFor="let solver of solvers$ | async">
       <td class="name">{{ solver.name }}</td>
       <td class="status">
-        <i class="fa" [ngClass]="statusIcon(solver)"></i>
+        <i class="fa fa-fw" [ngClass]="statusIcon(solver)"></i>
       </td>
       <td class="count">{{ solver.count }}</td>
     </tr>

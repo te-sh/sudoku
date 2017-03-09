@@ -1,27 +1,29 @@
 import { Injectable } from "@angular/core";
-import { Http } from "@angular/http";
 import { Observable, BehaviorSubject, Subscription } from "rxjs";
 import * as _ from "lodash";
 
-import { Result } from "models/result";
 import { Solver } from "models/solver";
 import { Store } from "models/store";
 import { BoardService } from "services/board.service";
+import { ModeService } from "services/mode.service";
 import { SolversService } from "services/solvers.service";
+import { SolveHelperService } from "services/solve_helper.service";
 
 @Injectable()
 export class SolveService {
   private subscription: Subscription;
 
   constructor(
-    private http: Http,
     private boardService: BoardService,
-    private solversService: SolversService
+    private modeService: ModeService,
+    private solversService: SolversService,
+    private solveHelperService: SolveHelperService
   ) {
   }
 
   run() {
     let store$ = new BehaviorSubject<Store>(this.initialStore);
+    this.modeService.toggleSolving();
 
     this.subscription = store$
       .map(store => _.clone(store))
@@ -35,16 +37,22 @@ export class SolveService {
         default: return this.complete(store);
         }
       })
-      .subscribe(store => {
-        this.boardService.updateCells(store.cells);
-        this.boardService.updateResult(store.result);
-        this.solversService.updateSolvers(store.solvers);
-        if (store.state === "complete") {
-          store$.complete();
-        } else {
-          store$.next(store);
+      .subscribe(
+        store => {
+          this.boardService.updateCells(store.cells);
+          this.boardService.updateResult(store.result);
+          this.solversService.updateSolvers(store.solvers);
+          if (store.state === "complete") {
+            store$.complete();
+          } else {
+            store$.next(store);
+          }
+        },
+        undefined,
+        () => {
+          this.modeService.toggleSolving();
         }
-      });
+      );
   }
 
   private get initialStore(): Store {
@@ -67,14 +75,9 @@ export class SolveService {
   private solve(store: Store): Observable<Store> {
     let solver = store.solvers[store.solverIndex];
 
-    let params = {
-      ground: this.boardService.ground,
-      cells: store.cells.map(cell => cell.toJson())
-    };
-
-    return this.http.post(`/solve/${solver.id}`, params)
-      .map(r => r.json())
-      .map(r => _.isEmpty(r) ? undefined : Result.fromJson(r))
+    return this.solveHelperService
+      .solve(this.boardService.ground, store.cells, solver)
+      .catch(_e => Observable.throw(store))
       .map(result => {
         if (result) {
           let solvers = this.newSolvers(store, solver.setStatus("hit").countup());
@@ -100,29 +103,9 @@ export class SolveService {
   }
 
   private apply(store: Store): Observable<Store> {
-    let cells = _.cloneDeep(store.cells);
-    if (store.result) {
-      if (store.result.removeCcs) {
-        store.result.removeCcs.forEach(cc => {
-          let cell = cells[cc.index];
-          if (cell.cands && cc.cands) {
-            cell.cands &= ~cc.cands;
-          }
-        });
-      }
-      if (store.result.decideVcs) {
-        store.result.decideVcs.forEach(vc => {
-          let cell = cells[vc.index];
-          if (vc.value) {
-            cell.setValue(vc.value);
-          }
-        });
-      }
-    }
-
+    let cells = this.solveHelperService.apply(store.cells, store.result);
     let result = undefined;
     let solvers = store.solvers.map(solver => solver.setStatus("none"));
-
     return Observable.of(_.assign(store, { state: "complete", cells, result, solvers }));
   }
 

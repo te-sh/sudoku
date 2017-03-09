@@ -9,6 +9,7 @@ import { ModeService } from "services/mode.service";
 import { GraphService } from "services/graph.service";
 import { SolversService } from "services/solvers.service";
 import { SolveService } from "services/solve.service";
+import { SolveHelperService } from "services/solve_helper.service";
 
 import { AppComponent } from "components/app.component";
 import { ToolbarComponent } from "components/toolbar.component";
@@ -39,7 +40,8 @@ import { UploadDialogComponent } from "components/upload_dialog.component";
     ModeService,
     GraphService,
     SolversService,
-    SolveService
+    SolveService,
+    SolveHelperService
   ],
   entryComponents: [
     DownloadDialogComponent,
