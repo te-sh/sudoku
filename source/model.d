@@ -30,6 +30,7 @@ class Ground
 class Result
 {
   CandsCell[] removeCcs;
+  ValueCell[] decideCcs;
 }
 
 class House
