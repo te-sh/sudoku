@@ -10,6 +10,7 @@ import { GraphService } from "services/graph.service";
 import { SolversService } from "services/solvers.service";
 import { SolveService } from "services/solve.service";
 import { SolveHelperService } from "services/solve_helper.service";
+import { HistoryService } from "services/history.service";
 
 import { AppComponent } from "components/app.component";
 import { ToolbarComponent } from "components/toolbar.component";
@@ -41,7 +42,8 @@ import { UploadDialogComponent } from "components/upload_dialog.component";
     GraphService,
     SolversService,
     SolveService,
-    SolveHelperService
+    SolveHelperService,
+    HistoryService
   ],
   entryComponents: [
     DownloadDialogComponent,

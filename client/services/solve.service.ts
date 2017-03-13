@@ -8,6 +8,7 @@ import { BoardService } from "services/board.service";
 import { ModeService } from "services/mode.service";
 import { SolversService } from "services/solvers.service";
 import { SolveHelperService } from "services/solve_helper.service";
+import { HistoryService } from "services/history.service";
 
 @Injectable()
 export class SolveService {
@@ -17,11 +18,12 @@ export class SolveService {
     private boardService: BoardService,
     private modeService: ModeService,
     private solversService: SolversService,
-    private solveHelperService: SolveHelperService
+    private solveHelperService: SolveHelperService,
+    private historyService: HistoryService
   ) {
   }
 
-  run() {
+  stepForward() {
     this.modeService.toggleSolving();
     this.solversService.clearSolvers();
 
@@ -65,6 +67,13 @@ export class SolveService {
     this.modeService.toggleSolving();
   }
 
+  stepBackward() {
+    let { cells, solvers } = this.historyService.removeLast();
+    this.boardService.updateCells(cells);
+    this.boardService.updateResult(undefined);
+    this.solversService.updateSolvers(solvers);
+  }
+
   private get initialStore(): Store {
     let result = this.boardService.result;
     return {
@@ -89,6 +98,7 @@ export class SolveService {
       .solve(this.boardService.ground, store.cells, solver)
       .map(result => {
         if (result) {
+          this.historyService.add(store.cells, store.solvers);
           let solvers = this.newSolvers(store, solver.setStatus("hit").countup());
           return _.assign(store, { state: "hit", result, solvers });
         } else {
