@@ -19,12 +19,10 @@ class NakedSingle : Base
 
   auto createResult(ValueCell[] decideVcs)
   {
-    if (!decideVcs.empty) {
-      auto result = new Result();
-      result.decideVcs = decideVcs;
-      return result;
-    } else {
-      return null;
-    }
+    if (decideVcs.empty) return null;
+
+    auto result = new Result();
+    result.decideVcs = decideVcs;
+    return result;
   }
 }

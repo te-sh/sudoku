@@ -29,8 +29,14 @@ export class GraphCand {
     this.text.visible = visible;
   }
 
-  setMarkVisible(mark: string, visible: boolean) {
-    this.marks[mark].visible = visible;
+  setResult(mark: string) {
+    this.marks[mark].visible = true;
+  }
+
+  removeResult() {
+    _.forEach(this.marks, g => {
+      g.visible = false;
+    });
   }
 
   private setContainer(ground: Ground, size: Size) {

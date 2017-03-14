@@ -57,13 +57,25 @@ class jResult
 {
   jCell[] removeCcs;
   jCell[] decideVcs;
+  jCell[] markCcs1;
+  jCell[] markCcs2;
+  int[] markCells1;
+  int[] markCells2;
+  int[] markHouses1;
+  int[] markHouses2;
 
   static jResult fromModel(Result result)
   {
     auto jresult = new jResult();
 
-    jresult.removeCcs = result.removeCcs.map!(cc => jCell.fromModel(cc)).array;
-    jresult.decideVcs = result.decideVcs.map!(vc => jCell.fromModel(vc)).array;
+    jresult.removeCcs   = result.removeCcs.map!(cc => jCell.fromModel(cc)).array;
+    jresult.decideVcs   = result.decideVcs.map!(vc => jCell.fromModel(vc)).array;
+    jresult.markCcs1    = result.markCcs1.map!(cc => jCell.fromModel(cc)).array;
+    jresult.markCcs2    = result.markCcs2.map!(cc => jCell.fromModel(cc)).array;
+    jresult.markCells1  = result.markCells1.map!"a.index".array;
+    jresult.markCells2  = result.markCells2.map!"a.index".array;
+    jresult.markHouses1 = result.markHouses1.map!"a.index".array;
+    jresult.markHouses2 = result.markHouses2.map!"a.index".array;
 
     return jresult;
   }
@@ -71,8 +83,14 @@ class jResult
   Json toJson()
   {
     auto json = Json.emptyObject;
-    if (!removeCcs.empty) json["removeCcs"] = removeCcs.serializeToJson;
-    if (!decideVcs.empty) json["decideVcs"] = decideVcs.serializeToJson;
+    if (!removeCcs.empty)   json["removeCcs"]   = removeCcs.serializeToJson;
+    if (!decideVcs.empty)   json["decideVcs"]   = decideVcs.serializeToJson;
+    if (!markCcs1.empty)    json["markCcs1"]    = markCcs1.serializeToJson;
+    if (!markCcs2.empty)    json["markCcs2"]    = markCcs2.serializeToJson;
+    if (!markCells1.empty)  json["markCells1"]  = markCells1.serializeToJson;
+    if (!markCells2.empty)  json["markCells1"]  = markCells2.serializeToJson;
+    if (!markHouses1.empty) json["markHouses1"] = markHouses1.serializeToJson;
+    if (!markHouses2.empty) json["markHouses1"] = markHouses2.serializeToJson;
     return json;
   }
 }

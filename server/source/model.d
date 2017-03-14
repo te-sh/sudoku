@@ -33,6 +33,12 @@ class Result
 {
   CandsCell[] removeCcs;
   ValueCell[] decideVcs;
+  CandsCell[] markCcs1;
+  CandsCell[] markCcs2;
+  Cell[] markCells1;
+  Cell[] markCells2;
+  House[] markHouses1;
+  House[] markHouses2;
 }
 
 class House

@@ -27,6 +27,16 @@ export class GraphHouse {
     this.setMarksGraphics();
   }
 
+  setResult(mark: string) {
+    this.marks[mark].visible = true;
+  }
+
+  removeResult() {
+    _.forEach(this.marks, g => {
+      g.visible = false;
+    });
+  }
+
   private setPoints(latticePoints: LatticePoint[]) {
     let cellPolys = this.house.cells.map(cell => {
       let p = latticePoints[cell];

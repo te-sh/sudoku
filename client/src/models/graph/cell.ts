@@ -61,16 +61,23 @@ export class GraphCell {
     });
   }
 
-  updateCandResult(mark: string, cell: Cell) {
+  setResult(mark: string) {
+    this.marks[mark].visible = true;
+  }
+
+  setCandResult(mark: string, cell: Cell) {
     this.graphCands.forEach((graphCand, index) => {
-      graphCand.setMarkVisible(mark, cell.has(index) || cell.value === index);
+      if (cell.has(index) || cell.value === index) {
+        graphCand.setResult(mark);
+      }
     });
   }
 
   removeResult() {
-    this.graphCands.forEach(graphCand => {
-      graphCand.setMarkVisible("remove", false);
+    _.forEach(this.marks, g => {
+      g.visible = false;
     });
+    this.graphCands.forEach(graphCand => graphCand.removeResult());
   }
 
   setEditMode(editMode: boolean) {
@@ -125,7 +132,8 @@ export class GraphCell {
 
   private setCursorGraphics(size: Size) {
     let config = this.config.cell;
-    this.cursor = Utils.buildRect(config.cursor, config.cursor.color!, size.cell);
+    let msize = size.cell - config.cursor.width;
+    this.cursor = Utils.buildRect(config.cursor, config.cursor.color!, msize);
     this.container.addChild(this.cursor);
   }
 

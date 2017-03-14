@@ -25,18 +25,15 @@ class Explicit : Base
     }
 
     removeCcs = removeCcs.filter!"a.cands".array;
-
     return createResult(removeCcs);
   }
 
   auto createResult(CandsCell[] removeCcs)
   {
-    if (!removeCcs.empty) {
-      auto result = new Result();
-      result.removeCcs = removeCcs;
-      return result;
-    } else {
-      return null;
-    }
+    if (removeCcs.empty) return null;
+
+    auto result = new Result();
+    result.removeCcs = removeCcs;
+    return result;
   }
 }

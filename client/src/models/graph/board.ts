@@ -59,16 +59,47 @@ export class GraphBoard {
       if (result) {
         if (result.removeCcs) {
           result.removeCcs.forEach(cc => {
-            this.graphCells[cc.index].updateCandResult("remove", cc);
+            this.graphCells[cc.index].setCandResult("remove", cc);
           });
         }
         if (result.decideVcs) {
           result.decideVcs.forEach(vc => {
-            this.graphCells[vc.index].updateCandResult("decide", vc);
+            this.graphCells[vc.index].setCandResult("decide", vc);
+          });
+        }
+        if (result.markCcs1) {
+          result.markCcs1.forEach(cc => {
+            this.graphCells[cc.index].setCandResult("mark1", cc);
+          });
+        }
+        if (result.markCcs2) {
+          result.markCcs2.forEach(cc => {
+            this.graphCells[cc.index].setCandResult("mark2", cc);
+          });
+        }
+        if (result.markCells1) {
+          result.markCells1.forEach(markCell => {
+            this.graphCells[markCell].setResult("mark1");
+          });
+        }
+        if (result.markCells2) {
+          result.markCells2.forEach(markCell => {
+            this.graphCells[markCell].setResult("mark2");
+          });
+        }
+        if (result.markHouses1) {
+          result.markHouses1.forEach(markHouse => {
+            this.graphHouses[markHouse].setResult("mark1");
+          });
+        }
+        if (result.markHouses2) {
+          result.markHouses2.forEach(markHouse => {
+            this.graphHouses[markHouse].setResult("mark2");
           });
         }
       } else {
         this.graphCells.forEach(graphCell => graphCell.removeResult());
+        this.graphHouses.forEach(graphHouse => graphHouse.removeResult());
       }
     }
   }

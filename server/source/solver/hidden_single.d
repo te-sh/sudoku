@@ -28,20 +28,19 @@ class HiddenSingle : Base
         }
       }
 
-      if (!decideVcs.empty)
-        return createResult(decideVcs);
+      auto result = createResult(decideVcs, markHouses);
+      if (result) return result;
     }
     return null;
   }
 
-  auto createResult(ValueCell[] decideVcs)
+  auto createResult(ValueCell[] decideVcs, House[] markHouses)
   {
-    if (!decideVcs.empty) {
-      auto result = new Result();
-      result.decideVcs = decideVcs;
-      return result;
-    } else {
-      return null;
-    }
+    if (decideVcs.empty) return null;
+
+    auto result = new Result();
+    result.decideVcs = decideVcs;
+    result.markHouses1 = markHouses;
+    return result;
   }
 }
