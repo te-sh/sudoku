@@ -94,32 +94,26 @@ export class GraphCell {
   }
 
   private setFrameGraphics(size: Size) {
-    this.frame = Utils.buildRect(
-      this.config.cell.frame,
-      this.config.cell.frame.color!,
-      size.cell
-    );
+    let config = this.config.cell;
+    this.frame = Utils.buildRect(config.frame, config.frame.color!, size.cell);
     this.container.addChild(this.frame);
   }
 
   private setTextGraphics(ground: Ground, size: Size) {
-    this.texts = _.times(ground.nc, index => Utils.buildText(
-      (index + 1).toString(),
-      this.config.cell.text,
-      this.config.cell.text.colors![0],
-      size.cell + this.config.cell.frame.width
-    ));
+    let config = this.config.cell;
+    let csize = size.cell + this.config.cell.frame.width;
+    this.texts = _.times(ground.nc, index => {
+      let str = (index + 1).toString();
+      return Utils.buildText(str, config.text, config.text.colors![0], csize);
+    });
     this.texts.forEach(text => {
       this.container.addChild(text);
     });
   }
 
   private setCursorGraphics(size: Size) {
-    this.cursor = Utils.buildRect(
-      this.config.cell.cursor,
-      this.config.cell.cursor.color!,
-      size.cell
-    );
+    let config = this.config.cell;
+    this.cursor = Utils.buildRect(config.cursor, config.cursor.color!, size.cell);
     this.container.addChild(this.cursor);
   }
 

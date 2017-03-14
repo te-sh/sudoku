@@ -49,7 +49,7 @@ export class Utils {
     let width = config.width;
 
     g.lineStyle(width, color, config.alpha);
-    g.drawPolygon(_.flatten(points).map(p => p + width / 2));
+    g.drawPolygon(_.flatten(points));
 
     return g;
   }
