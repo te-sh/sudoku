@@ -9,14 +9,14 @@ let isWatch = ENV === 'watch';
 
 let config = {
   entry: {
-    'main': './client/entry/main.ts',
-    'styles': './client/entry/styles.ts',
-    'vendor-ng': './client/entry/vendor-ng.ts',
-    'vendor': './client/entry/vendor.ts',
-    'polyfills': './client/entry/polyfills.ts'
+    'main': './src/entry/main.ts',
+    'styles': './src/entry/styles.ts',
+    'vendor-ng': './src/entry/vendor-ng.ts',
+    'vendor': './src/entry/vendor.ts',
+    'polyfills': './src/entry/polyfills.ts'
   },
   output: {
-    path: __dirname + '/public/assets',
+    path: __dirname + '../server/public/assets',
     publicPath: '/assets',
     filename: '[name].js',
     libraryTarget: 'var',
