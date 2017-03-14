@@ -24,6 +24,16 @@
             (click)="stepForward()">
       <md-icon fontSet="fa" fontIcon="fa-step-forward" class="fa-mat"></md-icon>
     </button>
+    <button md-icon-button
+            [disabled]="!(canForward$ | async)"
+            (click)="play()">
+      <md-icon fontSet="fa" fontIcon="fa-play" class="fa-mat"></md-icon>
+    </button>
+    <button md-icon-button
+            [disabled]="!(canForward$ | async)"
+            (click)="forward()">
+      <md-icon fontSet="fa" fontIcon="fa-forward" class="fa-mat"></md-icon>
+    </button>
   </div>
   <div fxFlex>
   </div>

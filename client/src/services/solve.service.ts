@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
-import { Observable, BehaviorSubject, Subscription } from "rxjs";
+import { Observable, Subject, BehaviorSubject, Subscription } from "rxjs";
 import * as _ from "lodash";
 
 import { Solver } from "models/solver";
-import { Store } from "models/store";
+import { Store, Interval } from "models/store";
 import { BoardService } from "services/board.service";
 import { ModeService } from "services/mode.service";
 import { SolversService } from "services/solvers.service";
@@ -23,41 +23,28 @@ export class SolveService {
   ) {
   }
 
-  stepForward() {
+  forward(interval?: Interval) {
     this.modeService.toggleSolving();
     this.solversService.clearSolvers();
 
-    let store$ = new BehaviorSubject<Store>(this.initialStore);
+    let store$ = new BehaviorSubject<Store>(this.initialStore(interval));
     this.subscription = store$
       .map(store => _.clone(store))
       .switchMap(store => {
         switch (store.state) {
-        case "start":  return this.start(store);
-        case "solve":  return this.solve(store);
-        case "hit":    return this.hit(store);
-        case "mishit": return this.mishit(store);
-        case "apply":  return this.apply(store);
-        default: return this.complete(store);
+        case "start":   return this.start(store);
+        case "solve":   return this.solve(store);
+        case "hit":     return this.hit(store);
+        case "mishit":  return this.mishit(store);
+        case "apply":   return this.apply(store);
+        case "applied": return this.applied(store);
+        default:        return this.complete(store);
         }
       })
       .subscribe(
-        store => {
-          this.boardService.updateCells(store.cells);
-          this.boardService.updateResult(store.result);
-          this.solversService.updateSolvers(store.solvers);
-          if (store.state === "complete") {
-            store$.complete();
-          } else {
-            store$.next(store);
-          }
-        },
-        _e => {
-          this.solversService.setSolvers("error");
-          this.modeService.toggleSolving();
-        },
-        () => {
-          this.modeService.toggleSolving();
-        }
+        store => this.onNext(store$, store),
+        _e => this.onError(),
+        () => this.onComplete()
       );
   }
 
@@ -74,15 +61,36 @@ export class SolveService {
     this.solversService.updateSolvers(solvers);
   }
 
-  private get initialStore(): Store {
+  private initialStore(interval?: Interval): Store {
     let result = this.boardService.result;
     return {
       cells: this.boardService.cells,
       result: result,
       solvers: this.solversService.solvers,
       solverIndex: 0,
-      state: result ? "apply" : "start"
+      state: result ? "apply" : "start",
+      interval: interval
     };
+  }
+
+  private onNext(store$: Subject<Store>, store: Store) {
+    this.boardService.updateCells(store.cells);
+    this.boardService.updateResult(store.result);
+    this.solversService.updateSolvers(store.solvers);
+    if (store.state === "complete") {
+      store$.complete();
+    } else {
+      store$.next(store);
+    }
+  }
+
+  private onError() {
+    this.solversService.setSolvers("error");
+    this.modeService.toggleSolving();
+  }
+
+  private onComplete() {
+    this.modeService.toggleSolving();
   }
 
   private start(store: Store): Observable<Store> {
@@ -109,7 +117,12 @@ export class SolveService {
   }
 
   private hit(store: Store): Observable<Store> {
-    return Observable.of(_.assign(store, { state: "complete" }));
+    if (store.interval) {
+      return Observable.of(_.assign(store, { state: "apply" }))
+        .delay(store.interval.solved);
+    } else {
+      return Observable.of(_.assign(store, { state: "complete" }));
+    }
   }
 
   private mishit(store: Store): Observable<Store> {
@@ -125,7 +138,16 @@ export class SolveService {
     let cells = this.solveHelperService.apply(store.cells, store.result);
     let result = undefined;
     let solvers = store.solvers.map(solver => solver.setStatus("none"));
-    return Observable.of(_.assign(store, { state: "complete", cells, result, solvers }));
+    return Observable.of(_.assign(store, { state: "applied", cells, result, solvers }));
+  }
+
+  private applied(store: Store): Observable<Store> {
+    if (store.interval) {
+      return Observable.of(_.assign(store, { state: "start" }))
+        .delay(store.interval.applied);
+    } else {
+      return Observable.of(_.assign(store, { state: "complete" }));
+    }
   }
 
   private complete(store: Store): Observable<Store> {

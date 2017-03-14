@@ -49,7 +49,21 @@ export class ToolbarComponent implements OnInit {
   }
 
   stepForward() {
-    this.solveService.stepForward();
+    this.solveService.forward();
+  }
+
+  play() {
+    this.solveService.forward({
+      solved: 3000,
+      applied: 500
+    });
+  }
+
+  forward() {
+    this.solveService.forward({
+      solved: 1000,
+      applied: 200
+    });
   }
 
   stop() {
