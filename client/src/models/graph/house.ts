@@ -11,7 +11,7 @@ export class GraphHouse {
   container: PIXI.Container;
 
   private frame: PIXI.Graphics;
-  private marks: {[key: string]: PIXI.Graphics};
+  private marks: { [key: string]: PIXI.Graphics };
   private points: number[][];
 
   constructor(

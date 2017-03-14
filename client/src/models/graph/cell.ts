@@ -14,6 +14,7 @@ export class GraphCell {
   private cell: Cell;
   private frame: PIXI.Graphics;
   private texts: PIXI.Text[];
+  private marks: { [key: string]: PIXI.Graphics };
   private cursor: PIXI.Graphics;
   private candsContainer = new PIXI.Container();
   private graphCands: GraphCand[];
@@ -27,6 +28,7 @@ export class GraphCell {
     this.setContainer(index, ground, size);
     this.setFrameGraphics(size);
     this.setTextGraphics(ground, size);
+    this.setMarksGraphics(size);
     this.setCursorGraphics(size);
     this.setCands(ground, size);
   }
@@ -95,7 +97,7 @@ export class GraphCell {
 
   private setFrameGraphics(size: Size) {
     let config = this.config.cell;
-    this.frame = Utils.buildRect(config.frame, config.frame.color!, size.cell, true);
+    this.frame = Utils.buildRect(config.frame, config.frame.color!, size.cell);
     this.container.addChild(this.frame);
   }
 
@@ -109,6 +111,15 @@ export class GraphCell {
     this.texts.forEach(text => {
       this.container.addChild(text);
     });
+  }
+
+  private setMarksGraphics(size: Size) {
+    let config = this.config.cell;
+    this.marks = {
+      mark1: Utils.buildRect(config.markRect, config.markRect.colors![0], size.cell, true),
+      mark2: Utils.buildRect(config.markRect, config.markRect.colors![0], size.cell)
+    };
+    _.forEach(this.marks, g => this.container.addChild(g));
   }
 
   private setCursorGraphics(size: Size) {

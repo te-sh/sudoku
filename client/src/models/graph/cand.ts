@@ -11,7 +11,7 @@ export class GraphCand {
 
   private frame: PIXI.Graphics;
   private text: PIXI.Text;
-  private marks: {[key: string]: PIXI.Graphics};
+  private marks: { [key: string]: PIXI.Graphics };
 
   constructor(
     private config: Config,
@@ -54,7 +54,9 @@ export class GraphCand {
     let csize = size.cand + config.frame.width;
     this.marks = {
       remove: Utils.buildCirc(config.markCirc, config.markCirc.colors![0], csize),
-      decide: Utils.buildCirc(config.markCirc, config.markCirc.colors![1], csize)
+      decide: Utils.buildCirc(config.markCirc, config.markCirc.colors![1], csize),
+      mark1: Utils.buildRect(config.markRect, config.markRect.colors![0], size.cand),
+      mark2: Utils.buildRect(config.markRect, config.markRect.colors![0], size.cand)
     };
     _.forEach(this.marks, g => this.container.addChild(g));
   }
