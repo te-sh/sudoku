@@ -97,7 +97,7 @@ export class GraphCell {
 
   private setFrameGraphics(size: Size) {
     let config = this.config.cell;
-    this.frame = Utils.buildRect(config.frame, config.frame.color!, size.cell);
+    this.frame = Utils.buildRect(config.frame, config.frame.color!, size.cell, true);
     this.container.addChild(this.frame);
   }
 
@@ -115,9 +115,10 @@ export class GraphCell {
 
   private setMarksGraphics(size: Size) {
     let config = this.config.cell;
+    let msize = size.cell - config.markRect.width;
     this.marks = {
-      mark1: Utils.buildRect(config.markRect, config.markRect.colors![0], size.cell, true),
-      mark2: Utils.buildRect(config.markRect, config.markRect.colors![0], size.cell)
+      mark1: Utils.buildRect(config.markRect, config.markRect.colors![0], msize),
+      mark2: Utils.buildRect(config.markRect, config.markRect.colors![1], msize)
     };
     _.forEach(this.marks, g => this.container.addChild(g));
   }

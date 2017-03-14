@@ -41,7 +41,7 @@
       "alpha": 1
     },
     "markRect": {
-      "offset": 1,
+      "offset": 0,
       "width": 2,
       "colors": ["ff4040", "4040ff"],
       "alpha": 0.6

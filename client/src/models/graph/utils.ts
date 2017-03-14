@@ -13,7 +13,7 @@ export class Utils {
     if (width) {
       g.lineStyle(width, color, config.alpha);
       let xy = width / 2 + offset;
-      let wh = size - offset * 2 - width / 2;
+      let wh = size - offset;
       g.drawRect(xy, xy, wh, wh);
     }
 

@@ -52,11 +52,12 @@ export class GraphCand {
   private setMarksGraphics(size: Size) {
     let config = this.config.cand;
     let csize = size.cand + config.frame.width;
+    let msize = size.cand - config.markRect.width;
     this.marks = {
       remove: Utils.buildCirc(config.markCirc, config.markCirc.colors![0], csize),
       decide: Utils.buildCirc(config.markCirc, config.markCirc.colors![1], csize),
-      mark1: Utils.buildRect(config.markRect, config.markRect.colors![0], size.cand),
-      mark2: Utils.buildRect(config.markRect, config.markRect.colors![0], size.cand)
+      mark1: Utils.buildRect(config.markRect, config.markRect.colors![0], msize),
+      mark2: Utils.buildRect(config.markRect, config.markRect.colors![1], msize)
     };
     _.forEach(this.marks, g => this.container.addChild(g));
   }
