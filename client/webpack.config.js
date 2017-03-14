@@ -16,7 +16,7 @@ let config = {
     'polyfills': './src/entry/polyfills.ts'
   },
   output: {
-    path: __dirname + '../server/public/assets',
+    path: __dirname + '/../server/public/assets',
     publicPath: '/assets',
     filename: '[name].js',
     libraryTarget: 'var',
