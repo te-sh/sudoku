@@ -3,7 +3,8 @@ import solver;
 
 auto solversList = [new Explicit(),
                     new NakedSingle(),
-                    new HiddenSingle()];
+                    new HiddenSingle(),
+                    new LockedCand()];
 
 auto getSolver(string method)
 {

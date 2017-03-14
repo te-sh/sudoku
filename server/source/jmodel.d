@@ -90,7 +90,7 @@ class jResult
     if (!markCells1.empty)  json["markCells1"]  = markCells1.serializeToJson;
     if (!markCells2.empty)  json["markCells1"]  = markCells2.serializeToJson;
     if (!markHouses1.empty) json["markHouses1"] = markHouses1.serializeToJson;
-    if (!markHouses2.empty) json["markHouses1"] = markHouses2.serializeToJson;
+    if (!markHouses2.empty) json["markHouses2"] = markHouses2.serializeToJson;
     return json;
   }
 }

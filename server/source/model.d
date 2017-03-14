@@ -1,4 +1,4 @@
-import std.algorithm, std.bitmanip, std.conv, std.format, std.range;
+import std.algorithm, std.bitmanip, std.conv, std.format, std.math, std.range;
 
 class Board
 {
@@ -72,6 +72,14 @@ abstract class Cell
   ValueCell newValueCell(int value = 0)
   {
     return new ValueCell(index, value);
+  }
+
+  override int opCmp(Object o)
+  {
+    if (auto c = cast(Cell)(o))
+      return sgn(index - c.index);
+    else
+      return 0;
   }
 
   abstract string dump();

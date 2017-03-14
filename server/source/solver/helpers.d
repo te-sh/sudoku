@@ -52,3 +52,9 @@ auto has(CandsCell cell, int cand)
 {
   return cell.cands.candsInclude(cand);
 }
+
+auto has(R)(R cells, int cand)
+  if (isInputRange!R && is(ElementType!R == CandsCell))
+{
+  return cells.filter!(cell => cell.has(cand));
+}
