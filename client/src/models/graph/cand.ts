@@ -45,7 +45,7 @@ export class GraphCand {
 
   private setFrameGraphics(size: Size) {
     let config = this.config.cand;
-    this.frame = Utils.buildRect(config.frame, config.frame.color!, size.cand);
+    this.frame = Utils.buildRect(config.frame, config.frame.color!, size.cand, true);
     this.container.addChild(this.frame);
   }
 

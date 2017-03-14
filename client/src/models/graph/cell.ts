@@ -95,7 +95,7 @@ export class GraphCell {
 
   private setFrameGraphics(size: Size) {
     let config = this.config.cell;
-    this.frame = Utils.buildRect(config.frame, config.frame.color!, size.cell);
+    this.frame = Utils.buildRect(config.frame, config.frame.color!, size.cell, true);
     this.container.addChild(this.frame);
   }
 
