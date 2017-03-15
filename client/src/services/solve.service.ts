@@ -96,7 +96,7 @@ export class SolveService {
   private start(store: Store): Observable<Store> {
     let solver = store.solvers[store.solverIndex];
     let solvers = this.newSolvers(store, solver.setStatus("accessing"));
-    return Observable.of(_.assign(store, { state: "solve", solvers }));
+    return this.newStore(store, "solve", { solvers });
   }
 
   private solve(store: Store): Observable<Store> {
@@ -107,30 +107,31 @@ export class SolveService {
       .map(result => {
         if (result) {
           this.historyService.add(store.cells, store.solvers);
+          let state = "hit";
           let solvers = this.newSolvers(store, solver.setStatus("hit").countup());
-          return _.assign(store, { state: "hit", result, solvers });
+          return _.assign(store, { state, result, solvers });
         } else {
+          let state = "mishit";
           let solvers = this.newSolvers(store, solver.setStatus("mishit"));
-          return _.assign(store, { state: "mishit", solvers });
+          return _.assign(store, { state, solvers });
         }
       });
   }
 
   private hit(store: Store): Observable<Store> {
     if (store.interval) {
-      return Observable.of(_.assign(store, { state: "apply" }))
-        .delay(store.interval.solved);
+      return this.newStore(store, "apply").delay(store.interval.solved);
     } else {
-      return Observable.of(_.assign(store, { state: "complete" }));
+      return this.newStore(store, "complete");
     }
   }
 
   private mishit(store: Store): Observable<Store> {
     store.solverIndex++;
     if (store.solverIndex >= store.solvers.length) {
-      return Observable.of(_.assign(store, { state: "complelet" }));
+      return this.newStore(store, "complete");
     } else {
-      return Observable.of(_.assign(store, { state: "start" }));
+      return this.newStore(store, "start");
     }
   }
 
@@ -138,20 +139,24 @@ export class SolveService {
     let cells = this.solveHelperService.apply(store.cells, store.result);
     let result = undefined;
     let solvers = store.solvers.map(solver => solver.setStatus("none"));
-    return Observable.of(_.assign(store, { state: "applied", cells, result, solvers }));
+    let solverIndex = 0;
+    return this.newStore(store, "applied", { cells, result, solvers, solverIndex });
   }
 
   private applied(store: Store): Observable<Store> {
     if (store.interval) {
-      return Observable.of(_.assign(store, { state: "start" }))
-        .delay(store.interval.applied);
+      return this.newStore(store, "start").delay(store.interval.applied);
     } else {
-      return Observable.of(_.assign(store, { state: "complete" }));
+      return this.newStore(store, "complete");
     }
   }
 
   private complete(store: Store): Observable<Store> {
-    return Observable.of(_.assign(store, { state: "complete" }));
+    return this.newStore(store, "complete");
+  }
+
+  private newStore(store: Store, state: string, additional?: any): Observable<Store> {
+    return Observable.of(_.assign(store, { state }, additional));
   }
 
   private newSolvers(store: Store, solver: Solver) {

@@ -14,9 +14,11 @@ import { UploadDialogComponent } from "./upload_dialog.component";
   templateUrl: "toolbar.component.html"
 })
 export class ToolbarComponent implements OnInit {
+  canEdit$: Observable<boolean>;
   canForward$: Observable<boolean>;
   canStop$: Observable<boolean>;
   canBackward$: Observable<boolean>;
+  canManipBoard$: Observable<boolean>;
 
   constructor(
     private dialog: MdDialog,
@@ -33,6 +35,7 @@ export class ToolbarComponent implements OnInit {
     let historyIsEmpty$ = this.historyService.histories$
       .map(histories => histories.length === 0);
 
+    this.canEdit$ = solving$.map(solving => !solving);
     this.canForward$ = Observable
       .combineLatest(edit$, solving$)
       .map(([edit, solving]) => !edit && !solving);
@@ -42,6 +45,9 @@ export class ToolbarComponent implements OnInit {
     this.canBackward$ = Observable
       .combineLatest(edit$, solving$, historyIsEmpty$)
       .map(([edit, solving, historyIsEmpty]) => !edit && !solving && !historyIsEmpty);
+    this.canManipBoard$ = Observable
+      .combineLatest(edit$, solving$)
+      .map(([edit, solving]) => !edit && !solving);
   }
 
   changeEditMode() {
@@ -54,15 +60,15 @@ export class ToolbarComponent implements OnInit {
 
   play() {
     this.solveService.forward({
-      solved: 3000,
+      solved: 2500,
       applied: 500
     });
   }
 
   forward() {
     this.solveService.forward({
-      solved: 1000,
-      applied: 200
+      solved: 500,
+      applied: 150
     });
   }
 

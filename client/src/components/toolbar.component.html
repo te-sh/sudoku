@@ -3,6 +3,7 @@
   <div fxFlexOffset="3">
     <md-button-toggle-group multiple>
       <md-button-toggle [checked]="edit$ | async"
+                        [disabled]="!(canEdit$ | async)"
                         (change)="changeEditMode()">
         <md-icon>edit</md-icon>
       </md-button-toggle>
@@ -39,17 +40,17 @@
   </div>
   <div>
     <button md-icon-button
-            [disabled]="edit$ | async"
+            [disabled]="!(canManipBoard$ | async)"
             (click)="clear()">
       <md-icon>clear</md-icon>
     </button>
     <button md-icon-button
-            [disabled]="edit$ | async"
+            [disabled]="!(canManipBoard$ | async)"
             (click)="download()">
       <md-icon>file_download</md-icon>
     </button>
     <button md-icon-button
-            [disabled]="edit$ | async"
+            [disabled]="!(canManipBoard$ | async)"
             (click)="upload()">
       <md-icon>file_upload</md-icon>
     </button>
