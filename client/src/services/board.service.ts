@@ -9,6 +9,7 @@ import { Board, Ground } from "models/board";
 import { Cell } from "models/cell";
 import { Result } from "models/result";
 import { ModeService } from "services/mode.service";
+import { HistoryService } from "services/history.service";
 
 @Injectable()
 export class BoardService {
@@ -19,7 +20,8 @@ export class BoardService {
 
   constructor(
     private http: Http,
-    private modeService: ModeService
+    private modeService: ModeService,
+    private historyService: HistoryService
   ) {
   }
 
@@ -56,14 +58,15 @@ export class BoardService {
 
   clear() {
     let cells = _.cloneDeep(this.cells);
-    cells.forEach(cell => {
-      cell.setValue(undefined);
-    });
+    cells.forEach(cell => cell.setValue(undefined));
     this.cells$.next(cells);
 
     let problems = _.clone(this.problems);
     _.fill(problems, false);
     this.problems$.next(problems);
+
+    this.result$.next(undefined);
+    this.historyService.clear();
   }
 
   setValue(value?: number) {
@@ -90,7 +93,7 @@ export class BoardService {
     let zip = new JSZip();
     zip.file("board.json", json);
     zip.generateAsync({ type: "blob", compression: "DEFLATE" })
-      .then(content => {
+      .then((content: any) => {
         let blob = new Blob([content], { type: "application/octed-stream" });
         fileSaver.saveAs(blob, fileName);
       });
@@ -101,11 +104,12 @@ export class BoardService {
     reader.onload = () => {
       let zip = new JSZip();
       zip.loadAsync(reader.result)
-        .then(extracted => {
-          extracted.file("board.json").async("string").then(json => {
-            let board = Board.fromJson(JSON.parse(json));
-            this.setBoard(board);
-          });
+        .then((extracted: any) => {
+          return extracted.file("board.json").async("string");
+        })
+        .then((json: any) => {
+          let board = Board.fromJson(JSON.parse(json));
+          this.setBoard(board);
         });
     };
     reader.readAsBinaryString(file);
@@ -116,5 +120,7 @@ export class BoardService {
     this.cells$.next(board.cells);
     this.problems$.next(board.problems);
     this.modeService.setCursor(0);
+    this.result$.next(undefined);
+    this.historyService.clear();
   }
 }

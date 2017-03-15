@@ -24,4 +24,8 @@ export class HistoryService {
     this.histories$.next(_.dropRight(this.histories));
     return history;
   }
+
+  clear() {
+    this.histories$.next([]);
+  }
 }
