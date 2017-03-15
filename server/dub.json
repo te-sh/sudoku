@@ -4,7 +4,8 @@
 		"te-sh"
 	],
 	"dependencies": {
-		"vibe-d": "~>0.7.30"
+		"vibe-d": "~>0.7.30",
+		"mir": "~>1.0.0"
 	},
 	"description": "Sudoku solver",
 	"copyright": "Copyright 2017, te-sh",

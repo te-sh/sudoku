@@ -32,12 +32,12 @@ class LockedCand : Base
           auto intCcs = setIntersection(ccs1, ccs2).array;
           if (intCcs.length < 2) continue;
 
-          auto subCcs1 = setDifference(ccs1, intCcs).array;
-          auto subCcs2 = setDifference(ccs2, intCcs).array;
+          auto subCcs1 = setDifference(ccs1, intCcs);
+          auto subCcs2 = setDifference(ccs2, intCcs);
           if (!subCcs1.empty && subCcs2.empty) {
-            auto removeCcs = subCcs1.map!(cc => cc.newCandsCell([c].toCands)).array;
-            auto markCcs = intCcs.map!(cc => cc.newCandsCell([c].toCands)).array;
-            return createResult(removeCcs, markCcs, house1, house2);
+            auto removeCcs = subCcs1.map!(cc => cc.newCandsCell([c].toCands));
+            auto markCcs = intCcs.map!(cc => cc.newCandsCell([c].toCands));
+            return createResult(removeCcs.array, markCcs.array, house1, house2);
           }
         }
       }

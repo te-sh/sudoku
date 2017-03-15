@@ -12,15 +12,16 @@ class NakedSingle : Base
   {
     auto decideVcs = board.cells.candsCells
       .filter!(cell => cell.cands.candsSize == 1)
-      .map!(cell => cell.newValueCell(cell.cands.candsFront))
-      .array;
-    return createResult(decideVcs);
+      .map!(cell => cell.newValueCell(cell.cands.candsFront));
+
+    if (!decideVcs.empty)
+      return createResult(decideVcs.array);
+    else
+      return null;
   }
 
   auto createResult(ValueCell[] decideVcs)
   {
-    if (decideVcs.empty) return null;
-
     auto result = new Result();
     result.decideVcs = decideVcs;
     return result;

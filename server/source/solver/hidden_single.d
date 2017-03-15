@@ -28,16 +28,14 @@ class HiddenSingle : Base
         }
       }
 
-      auto result = createResult(decideVcs, markHouses);
-      if (result) return result;
+      if (!decideVcs.empty)
+        return createResult(decideVcs, markHouses);
     }
     return null;
   }
 
   auto createResult(ValueCell[] decideVcs, House[] markHouses)
   {
-    if (decideVcs.empty) return null;
-
     auto result = new Result();
     result.decideVcs = decideVcs;
     result.markHouses1 = markHouses;

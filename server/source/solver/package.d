@@ -5,3 +5,4 @@ public import explicit;
 public import naked_single;
 public import hidden_single;
 public import locked_cand;
+public import naked_k;
