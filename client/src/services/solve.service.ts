@@ -26,7 +26,7 @@ export class SolveService {
 
   forward(interval?: Interval) {
     this.modeService.toggleSolving();
-    this.solversService.clearSolvers();
+    this.solversService.clearStatus();
 
     let store$ = new BehaviorSubject<Store>(this.initialStore(interval));
     this.subscription = store$
@@ -51,7 +51,7 @@ export class SolveService {
 
   stop() {
     this.subscription.unsubscribe();
-    this.solversService.setSolvers("abort");
+    this.solversService.setStatus("abort");
     this.modeService.toggleSolving();
   }
 
@@ -66,7 +66,7 @@ export class SolveService {
   private updateHistory(arg: { cells: Cell[], solvers: Solver[] }) {
     this.boardService.updateCells(arg.cells);
     this.boardService.updateResult(undefined);
-    this.solversService.updateSolvers(arg.solvers);
+    this.solversService.update(arg.solvers);
   }
 
   private initialStore(interval?: Interval): Store {
@@ -84,7 +84,7 @@ export class SolveService {
   private onNext(store$: Subject<Store>, store: Store) {
     this.boardService.updateCells(store.cells);
     this.boardService.updateResult(store.result);
-    this.solversService.updateSolvers(store.solvers);
+    this.solversService.update(store.solvers);
     if (store.state === "complete") {
       store$.complete();
     } else {
@@ -93,7 +93,7 @@ export class SolveService {
   }
 
   private onError() {
-    this.solversService.setSolvers("error");
+    this.solversService.setStatus("error");
     this.modeService.toggleSolving();
   }
 

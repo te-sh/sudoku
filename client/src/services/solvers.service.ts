@@ -15,16 +15,21 @@ export class SolversService {
     return this.solvers$.getValue();
   }
 
-  updateSolvers(solvers: Solver[]) {
+  update(solvers: Solver[]) {
     this.solvers$.next(solvers);
   }
 
-  clearSolvers() {
+  clear() {
+    let solvers = this.solvers.map(solver => solver.reset());
+    this.solvers$.next(solvers);
+  }
+
+  clearStatus() {
     let solvers = this.solvers.map(solver => solver.setStatus("none"));
     this.solvers$.next(solvers);
   }
 
-  setSolvers(status: Status) {
+  setStatus(status: Status) {
     let solvers = this.solvers.map(solver => {
       if (solver.status === "accessing") {
         return solver.setStatus(status);

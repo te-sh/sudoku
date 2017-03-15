@@ -25,4 +25,8 @@ export class Solver {
   countup() {
     return new Solver(this.id, this.name, this.count + 1, this.status);
   }
+
+  reset() {
+    return new Solver(this.id, this.name, 0, "none");
+  }
 }

@@ -9,6 +9,7 @@ import { Board, Ground } from "models/board";
 import { Cell } from "models/cell";
 import { Result } from "models/result";
 import { ModeService } from "services/mode.service";
+import { SolversService } from "services/solvers.service";
 import { HistoryService } from "services/history.service";
 
 @Injectable()
@@ -21,6 +22,7 @@ export class BoardService {
   constructor(
     private http: Http,
     private modeService: ModeService,
+    private solversService: SolversService,
     private historyService: HistoryService
   ) {
   }
@@ -67,6 +69,7 @@ export class BoardService {
 
     this.result$.next(undefined);
     this.historyService.clear();
+    this.solversService.clear();
   }
 
   setValue(value?: number) {
@@ -122,5 +125,6 @@ export class BoardService {
     this.modeService.setCursor(0);
     this.result$.next(undefined);
     this.historyService.clear();
+    this.solversService.clear();
   }
 }
