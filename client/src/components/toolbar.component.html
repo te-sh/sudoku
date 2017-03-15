@@ -12,6 +12,11 @@
   <div fxFlexOffset="3">
     <button md-icon-button
             [disabled]="!(canBackward$ | async)"
+            (click)="fastBackward()">
+      <md-icon fontSet="fa" fontIcon="fa-fast-backward" class="fa-mat"></md-icon>
+    </button>
+    <button md-icon-button
+            [disabled]="!(canBackward$ | async)"
             (click)="stepBackward()">
       <md-icon fontSet="fa" fontIcon="fa-step-backward" class="fa-mat"></md-icon>
     </button>

@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable, Subject, BehaviorSubject, Subscription } from "rxjs";
 import * as _ from "lodash";
 
+import { Cell } from "models/cell";
 import { Solver } from "models/solver";
 import { Store, Interval } from "models/store";
 import { BoardService } from "services/board.service";
@@ -54,11 +55,18 @@ export class SolveService {
     this.modeService.toggleSolving();
   }
 
-  stepBackward() {
-    let { cells, solvers } = this.historyService.removeLast();
-    this.boardService.updateCells(cells);
+  historyBack() {
+    this.updateHistory(this.historyService.removeLast());
+  }
+
+  historyBackToFirst() {
+    this.updateHistory(this.historyService.moveToFirst());
+  }
+
+  private updateHistory(arg: { cells: Cell[], solvers: Solver[] }) {
+    this.boardService.updateCells(arg.cells);
     this.boardService.updateResult(undefined);
-    this.solversService.updateSolvers(solvers);
+    this.solversService.updateSolvers(arg.solvers);
   }
 
   private initialStore(interval?: Interval): Store {

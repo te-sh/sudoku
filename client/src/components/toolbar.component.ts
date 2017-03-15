@@ -77,7 +77,11 @@ export class ToolbarComponent implements OnInit {
   }
 
   stepBackward() {
-    this.solveService.stepBackward();
+    this.solveService.historyBack();
+  }
+
+  fastBackward() {
+    this.solveService.historyBackToFirst();
   }
 
   clear() {

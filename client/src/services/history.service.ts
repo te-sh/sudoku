@@ -25,6 +25,12 @@ export class HistoryService {
     return history;
   }
 
+  moveToFirst() {
+    let history = _.first(this.histories);
+    this.histories$.next([]);
+    return history;
+  }
+
   clear() {
     this.histories$.next([]);
   }
