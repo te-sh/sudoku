@@ -8,7 +8,9 @@ auto solversList = [new Explicit,
                     new NakedK!2,
                     new NakedK!3,
                     new HiddenK!2,
-                    new HiddenK!3];
+                    new HiddenK!3,
+                    new FishK!2,
+                    new FishK!3];
 
 auto getSolver(string method)
 {

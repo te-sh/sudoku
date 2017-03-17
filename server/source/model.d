@@ -55,6 +55,12 @@ class House
     this.type = type;
     this.cells = cells;
   }
+
+  int opCmp(House o)
+  {
+    return sgn(index - o.index);
+  }
+  alias opCmp = Object.opCmp;
 }
 
 abstract class Cell
@@ -76,13 +82,11 @@ abstract class Cell
     return new ValueCell(index, value);
   }
 
-  override int opCmp(Object o)
+  int opCmp(Cell o)
   {
-    if (auto c = cast(Cell)(o))
-      return sgn(index - c.index);
-    else
-      return 0;
+    return sgn(index - o.index);
   }
+  alias opCmp = Object.opCmp;
 
   abstract string dump();
 }

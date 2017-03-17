@@ -58,3 +58,23 @@ auto has(R)(R cells, int cand)
 {
   return cells.filter!(cell => cell.has(cand));
 }
+
+class CellToHouses
+{
+  House[][] housesList;
+
+  this(Board board)
+  {
+    housesList = new House[][](board.cells.length);
+
+    foreach (house; board.houses)
+      foreach (cell; house.cells) {
+        housesList[cell.index] ~= house;
+      }
+  }
+
+  auto opIndex(Cell cell)
+  {
+    return housesList[cell.index];
+  }
+}
