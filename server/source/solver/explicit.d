@@ -10,31 +10,32 @@ class Explicit : Base
 
   override Result solve(Board board)
   {
-    auto removeCcs = board.cells.map!"a.newCc".array;
+    auto bufCcs = board.cells.map!(cell => cell.newCc).array;
 
     foreach (house; board.houses) {
       auto values = house.valueCells.map!"a.value".toCands;
       foreach (cell; house.candsCells)
-        removeCcs[cell.index].cands |= values;
+        bufCcs[cell.index].cands |= values;
     }
 
-    foreach (removeCc; removeCcs) {
-      auto cell = cast(CandsCell)(board.cells[removeCc.index]);
+    foreach (cc; bufCcs) {
+      auto cell = cast(CandsCell)(board.cells[cc.index]);
       if (cell !is null)
-        removeCc.cands &= cell.cands;
+        cc.cands &= cell.cands;
     }
 
-    removeCcs = removeCcs.filter!"a.cands".array;
+    auto removeCcs = bufCcs.filter!"a.cands";
+
     if (!removeCcs.empty)
       return createResult(removeCcs);
     else
       return null;
   }
 
-  auto createResult(CandsCell[] removeCcs)
+  auto createResult(R)(R removeCcs)
   {
     auto result = new Result();
-    result.removeCcs = removeCcs;
+    result.removeCcs = removeCcs.array;
     return result;
   }
 }

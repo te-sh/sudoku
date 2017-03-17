@@ -36,40 +36,32 @@ class FishK(int k) if (k >= 2 || k <= 4) : Base
 
     foreach (markHouses; houses1.combinations(k))
       foreach (c; board.nc.iota) {
-        auto checkCcs = markHouses
-          .map!(house => house.candsCells.has(c).array)
-          .array;
-        if (!checkCcs.all!"a.length") continue;
-        auto targetCcs = checkCcs.joiner.array.sort();
+        if (markHouses.any!(house => house.candsCells.has(c).empty)) continue;
+        auto targetCcs = markHouses.candsCells.has(c).array.sort();
 
         auto houses2 = targetCcs
-          .map!(cc => cellToHouses[cc].filter!(house2 => house2.type == type2))
+          .map!(cc => cellToHouses[cc].typeOf(type2))
           .joiner.array.sort().uniq.array;
 
         if (houses2.length != k) continue;
 
-        auto orthCcs = houses2
-          .map!(house2 => house2.candsCells.has(c).array)
-          .joiner.array.sort();
-
-        auto removeCcs = setDifference(orthCcs, targetCcs)
-          .map!(cc => cc.newCc([c].toCands));
-
-        auto markCcs = targetCcs.map!(cc => cc.newCc([c].toCands));
+        auto orthCcs = houses2.candsCells.has(c).array.sort();
+        auto removeCcs = setDifference(orthCcs, targetCcs).map!(cc => cc.newCc([c]));
+        auto markCcs = targetCcs.map!(cc => cc.newCc([c]));
 
         if (!removeCcs.empty)
-          return createResult(removeCcs.array, markCcs.array, markHouses.array);
+          return createResult(removeCcs, markCcs, markHouses);
       }
 
     return null;
   }
 
-  auto createResult(CandsCell[] removeCcs, CandsCell[] markCcs, House[] markHouses)
+  auto createResult(R1, R2, R3)(R1 removeCcs, R2 markCcs, R3 markHouses)
   {
     auto result = new Result();
-    result.removeCcs = removeCcs;
-    result.markCcs1 = markCcs;
-    result.markHouses1 = markHouses;
+    result.removeCcs = removeCcs.array;
+    result.markCcs1 = markCcs.array;
+    result.markHouses1 = markHouses.array;
     return result;
   }
 }

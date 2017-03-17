@@ -15,15 +15,15 @@ class NakedSingle : Base
       .map!(cell => cell.newVc(cell.cands.candsFront));
 
     if (!decideVcs.empty)
-      return createResult(decideVcs.array);
+      return createResult(decideVcs);
     else
       return null;
   }
 
-  auto createResult(ValueCell[] decideVcs)
+  auto createResult(R)(R decideVcs)
   {
     auto result = new Result();
-    result.decideVcs = decideVcs;
+    result.decideVcs = decideVcs.array;
     return result;
   }
 }

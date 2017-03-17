@@ -72,16 +72,6 @@ abstract class Cell
     this.index = index;
   }
 
-  CandsCell newCc(int cands = 0)
-  {
-    return new CandsCell(index, cands);
-  }
-
-  ValueCell newVc(int value = 0)
-  {
-    return new ValueCell(index, value);
-  }
-
   int opCmp(Cell o)
   {
     return sgn(index - o.index);

@@ -23,17 +23,14 @@ class NakedK(int k) if (k >= 2 || k <= 4) : Base
       auto houseCcs = house.candsCells.array;
       foreach (candVs; board.nc.iota.combinations(k)) {
         auto cands = candVs.toCands;
-        auto markCcs = houseCcs
-          .filter!(cc => !(cc.cands & ~cands))
-          .array;
+        auto markCcs = houseCcs.filter!(cc => !(cc.cands & ~cands)).array;
 
         if (markCcs.length != k) continue;
         if (markCcs.map!"a.cands".fold!"a | b" != cands) continue;
 
         auto removeCcs = setDifference(houseCcs, markCcs)
           .map!(cc => cc.newCc(cc.cands & cands))
-          .filter!"a.cands"
-          .array;
+          .filter!"a.cands";
 
         if (!removeCcs.empty)
           return createResult(removeCcs, markCcs, house);
@@ -43,11 +40,11 @@ class NakedK(int k) if (k >= 2 || k <= 4) : Base
     return null;
   }
 
-  auto createResult(CandsCell[] removeCcs, CandsCell[] markCcs, House markHouse)
+  auto createResult(R1, R2)(R1 removeCcs, R2 markCcs, House markHouse)
   {
     auto result = new Result();
-    result.removeCcs = removeCcs;
-    result.markCcs1 = markCcs;
+    result.removeCcs = removeCcs.array;
+    result.markCcs1 = markCcs.array;
     result.markHouses1 = [markHouse];
     return result;
   }
