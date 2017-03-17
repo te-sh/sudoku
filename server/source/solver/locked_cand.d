@@ -35,8 +35,8 @@ class LockedCand : Base
           auto subCcs1 = setDifference(ccs1, intCcs);
           auto subCcs2 = setDifference(ccs2, intCcs);
           if (!subCcs1.empty && subCcs2.empty) {
-            auto removeCcs = subCcs1.map!(cc => cc.newCandsCell([c].toCands));
-            auto markCcs = intCcs.map!(cc => cc.newCandsCell([c].toCands));
+            auto removeCcs = subCcs1.map!(cc => cc.newCc([c].toCands));
+            auto markCcs = intCcs.map!(cc => cc.newCc([c].toCands));
             return createResult(removeCcs.array, markCcs.array, house1, house2);
           }
         }

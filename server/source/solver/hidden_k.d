@@ -2,16 +2,16 @@ import std.algorithm, std.range;
 import mir.combinatorics;
 import model, base, helpers;
 
-class NakedK(int k) if (k >= 2 || k <= 4) : Base
+class HiddenK(int k) if (k >= 2 || k <= 4) : Base
 {
   this()
   {
     static if (k == 2) {
-      super("naked-pair", "Naked Pair");
+      super("hidden-pair", "Hidden Pair");
     } else if (k == 3) {
-      super("naked-triple", "Naked Triple");
+      super("hidden-triple", "Hidden Triple");
     } else if (k == 4) {
-      super("naked-quad", "Naked Quad");
+      super("hidden-quad", "Hidden Quad");
     } else {
       assert(0);
     }
@@ -23,15 +23,17 @@ class NakedK(int k) if (k >= 2 || k <= 4) : Base
       auto houseCcs = house.candsCells.array;
       foreach (candVs; board.nc.iota.combinations(k)) {
         auto cands = candVs.toCands;
-        auto markCcs = houseCcs
-          .filter!(cc => !(cc.cands & ~cands))
+        auto targetCcs = houseCcs.filter!(cc => cc.cands & cands).array;
+        if (targetCcs.length != k) continue;
+
+        auto markCcs = targetCcs
+          .map!(cc => cc.newCc(cc.cands & cands))
           .array;
 
-        if (markCcs.length != k) continue;
         if (markCcs.map!"a.cands".fold!"a | b" != cands) continue;
 
-        auto removeCcs = setDifference(houseCcs, markCcs)
-          .map!(cc => cc.newCc(cc.cands & cands))
+        auto removeCcs = targetCcs
+          .map!(cc => cc.newCc(cc.cands & ~cands))
           .filter!"a.cands"
           .array;
 

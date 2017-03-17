@@ -64,12 +64,12 @@ abstract class Cell
     this.index = index;
   }
 
-  CandsCell newCandsCell(int cands = 0)
+  CandsCell newCc(int cands = 0)
   {
     return new CandsCell(index, cands);
   }
 
-  ValueCell newValueCell(int value = 0)
+  ValueCell newVc(int value = 0)
   {
     return new ValueCell(index, value);
   }

@@ -10,7 +10,7 @@ class Explicit : Base
 
   override Result solve(Board board)
   {
-    auto removeCcs = board.cells.map!"a.newCandsCell".array;
+    auto removeCcs = board.cells.map!"a.newCc".array;
 
     foreach (house; board.houses) {
       auto values = house.valueCells.map!"a.value".toCands;

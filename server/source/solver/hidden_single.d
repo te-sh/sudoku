@@ -20,7 +20,7 @@ class HiddenSingle : Base
         foreach (cand; board.nc.iota) {
           auto cells = house.candsCells.filter!(cell => cell.has(cand)).array;
           if (cells.length == 1)
-            vcs ~= cells[0].newValueCell(cand);
+            vcs ~= cells[0].newVc(cand);
         }
         if (!vcs.empty) {
           markHouses ~= house;

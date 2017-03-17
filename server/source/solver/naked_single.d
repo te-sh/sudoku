@@ -12,7 +12,7 @@ class NakedSingle : Base
   {
     auto decideVcs = board.cells.candsCells
       .filter!(cell => cell.cands.candsSize == 1)
-      .map!(cell => cell.newValueCell(cell.cands.candsFront));
+      .map!(cell => cell.newVc(cell.cands.candsFront));
 
     if (!decideVcs.empty)
       return createResult(decideVcs.array);
