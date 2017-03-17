@@ -41,13 +41,15 @@ class Result
   House[] markHouses2;
 }
 
+enum HouseType { row, col, box };
+
 class House
 {
   int index;
-  string type;
+  HouseType type;
   Cell[] cells;
 
-  this(int index, string type, Cell[] cells)
+  this(int index, HouseType type, Cell[] cells)
   {
     this.index = index;
     this.type = type;

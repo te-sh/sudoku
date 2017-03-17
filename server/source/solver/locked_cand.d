@@ -21,7 +21,7 @@ class LockedCand : Base
     return null;
   }
 
-  auto withTypes(Board board, string type1, string type2) {
+  auto withTypes(Board board, HouseType type1, HouseType type2) {
     auto houses1 = board.houses.filter!(house => house.type == type1).array;
     auto houses2 = board.houses.filter!(house => house.type == type2).array;
     foreach (house1; houses1)

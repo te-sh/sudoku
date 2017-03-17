@@ -1,4 +1,4 @@
-import std.algorithm, std.range;
+import std.algorithm, std.conv, std.range;
 import vibe.d;
 import model;
 
@@ -113,7 +113,7 @@ class jHouse
   House toModel(Cell[] bCells)
   {
     auto hCells = this.cells.map!(i => bCells[i]).array;
-    return new House(this.index, this.type, hCells);
+    return new House(this.index, this.type.to!HouseType, hCells);
   }
 }
 
