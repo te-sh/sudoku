@@ -8,8 +8,9 @@ import { BoardService } from "services/board.service";
 import { ModeService } from "services/mode.service";
 import { GraphService } from "services/graph.service";
 import { SolversService } from "services/solvers.service";
+import { SolveNavService } from "services/solve_nav.service";
 import { SolveService } from "services/solve.service";
-import { SolveHelperService } from "services/solve_helper.service";
+import { StoreService } from "services/store.service";
 import { HistoryService } from "services/history.service";
 
 import { AppComponent } from "components/app.component";
@@ -41,8 +42,9 @@ import { UploadDialogComponent } from "components/upload_dialog.component";
     ModeService,
     GraphService,
     SolversService,
+    SolveNavService,
     SolveService,
-    SolveHelperService,
+    StoreService,
     HistoryService
   ],
   entryComponents: [

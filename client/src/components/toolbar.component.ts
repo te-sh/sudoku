@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 
 import { BoardService } from "services/board.service";
 import { ModeService } from "services/mode.service";
-import { SolveService } from "services/solve.service";
+import { SolveNavService } from "services/solve_nav.service";
 import { HistoryService } from "services/history.service";
 import { DownloadDialogComponent } from "./download_dialog.component";
 import { UploadDialogComponent } from "./upload_dialog.component";
@@ -24,7 +24,7 @@ export class ToolbarComponent implements OnInit {
     private dialog: MdDialog,
     private boardService: BoardService,
     private modeService: ModeService,
-    private solveService: SolveService,
+    private solveNavService: SolveNavService,
     private historyService: HistoryService
   ) {
   }
@@ -55,33 +55,33 @@ export class ToolbarComponent implements OnInit {
   }
 
   stepForward() {
-    this.solveService.forward();
+    this.solveNavService.forward();
   }
 
   play() {
-    this.solveService.forward({
+    this.solveNavService.forward({
       solved: 2500,
       applied: 500
     });
   }
 
   forward() {
-    this.solveService.forward({
+    this.solveNavService.forward({
       solved: 500,
       applied: 150
     });
   }
 
   stop() {
-    this.solveService.stop();
+    this.solveNavService.stop();
   }
 
   stepBackward() {
-    this.solveService.historyBack();
+    this.solveNavService.historyBack();
   }
 
   fastBackward() {
-    this.solveService.historyBackToFirst();
+    this.solveNavService.historyBackToFirst();
   }
 
   clear() {
