@@ -63,6 +63,7 @@ class jResult
   int[] markCells2;
   int[] markHouses1;
   int[] markHouses2;
+  jLink[] links;
 
   static jResult fromModel(Result result)
   {
@@ -76,6 +77,7 @@ class jResult
     jresult.markCells2  = result.markCells2.map!"a.index".array;
     jresult.markHouses1 = result.markHouses1.map!"a.index".array;
     jresult.markHouses2 = result.markHouses2.map!"a.index".array;
+    jresult.links       = result.links.map!(link => jLink.fromModel(link)).array;
 
     return jresult;
   }
@@ -83,6 +85,7 @@ class jResult
   Json toJson()
   {
     auto json = Json.emptyObject;
+
     if (!removeCcs.empty)   json["removeCcs"]   = removeCcs.serializeToJson;
     if (!decideVcs.empty)   json["decideVcs"]   = decideVcs.serializeToJson;
     if (!markCcs1.empty)    json["markCcs1"]    = markCcs1.serializeToJson;
@@ -91,7 +94,27 @@ class jResult
     if (!markCells2.empty)  json["markCells1"]  = markCells2.serializeToJson;
     if (!markHouses1.empty) json["markHouses1"] = markHouses1.serializeToJson;
     if (!markHouses2.empty) json["markHouses2"] = markHouses2.serializeToJson;
+    if (!links.empty)       json["links"]       = links.serializeToJson;
+
     return json;
+  }
+}
+
+class jLink
+{
+  jCell vc1, vc2;
+  bool strong;
+
+  this(jCell vc1, jCell vc2, bool strong)
+  {
+    this.vc1 = vc1;
+    this.vc2 = vc2;
+    this.strong = strong;
+  }
+
+  static jLink fromModel(Link link)
+  {
+    return new jLink(jCell.fromModel(link.vc1), jCell.fromModel(link.vc2), link.strong);
   }
 }
 

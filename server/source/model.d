@@ -39,6 +39,20 @@ class Result
   Cell[] markCells2;
   House[] markHouses1;
   House[] markHouses2;
+  Link[] links;
+}
+
+class Link
+{
+  ValueCell vc1, vc2;
+  bool strong;
+
+  this(ValueCell vc1, ValueCell vc2, bool strong)
+  {
+    this.vc1 = vc1;
+    this.vc2 = vc2;
+    this.strong = strong;
+  }
 }
 
 enum HouseType { row, col, box };

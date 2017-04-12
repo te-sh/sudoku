@@ -9,7 +9,8 @@ export class Result {
     public markCells1?: number[],
     public markCells2?: number[],
     public markHouses1?: number[],
-    public markHouses2?: number[]
+    public markHouses2?: number[],
+    public links?: Link[]
   ) {
   }
 
@@ -22,7 +23,25 @@ export class Result {
       json.markCells1,
       json.markCells2,
       json.markHouses1,
-      json.markHouses2
+      json.markHouses2,
+      json.links ? json.links.map((link: any) => Link.fromJson(link)) : undefined
+    );
+  }
+}
+
+export class Link {
+  constructor(
+    public vc1: Cell,
+    public vc2: Cell,
+    public strong: boolean
+  ) {
+  }
+
+  static fromJson(json: any) {
+    return new Link(
+      Cell.fromJson(json.vc1),
+      Cell.fromJson(json.vc2),
+      json.strong
     );
   }
 }
