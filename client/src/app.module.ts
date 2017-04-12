@@ -25,7 +25,7 @@ import { UploadDialogComponent } from "components/upload_dialog.component";
     BrowserModule,
     FormsModule,
     MaterialModule.forRoot(),
-    FlexLayoutModule.forRoot()
+    FlexLayoutModule
   ],
   declarations: [
     AppComponent,
