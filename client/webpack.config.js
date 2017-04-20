@@ -71,7 +71,7 @@ let config = {
       name: ['polyfills', 'vendor-ng', 'vendor'].reverse()
     }),
     new ContextReplacementPlugin(
-      /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
+      /angular(\\|\/)core(\\|\/)@angular/,
       './angular'
     )
   ],

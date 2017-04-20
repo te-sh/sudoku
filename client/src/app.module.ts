@@ -1,7 +1,11 @@
 import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
+import { CommonModule } from "@angular/common";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule } from "@angular/forms";
-import { MaterialModule, MdIconRegistry } from "@angular/material";
+import {
+  MdButtonModule, MdButtonToggleModule, MdCardModule, MdDialogModule,
+  MdIconModule, MdInputModule, MdToolbarModule, MdIconRegistry
+} from "@angular/material";
 import { FlexLayoutModule } from "@angular/flex-layout";
 
 import { BoardService } from "services/board.service";
@@ -23,9 +27,16 @@ import { UploadDialogComponent } from "components/upload_dialog.component";
 
 @NgModule({
   imports: [
-    BrowserModule,
+    CommonModule,
+    BrowserAnimationsModule,
     FormsModule,
-    MaterialModule.forRoot(),
+    MdButtonModule,
+    MdButtonToggleModule,
+    MdCardModule,
+    MdDialogModule,
+    MdIconModule,
+    MdInputModule,
+    MdToolbarModule,
     FlexLayoutModule
   ],
   declarations: [
